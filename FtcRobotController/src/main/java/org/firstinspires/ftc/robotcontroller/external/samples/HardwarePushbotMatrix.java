@@ -55,8 +55,8 @@ import com.qualcomm.robotcore.hardware.ServoController;
  *
  * In addition, the Matrix Controller has been assigned the name:  "matrix controller"
  */
-public class HardwarePushbotMatrix extends HardwarePushbot
-{
+public class HardwarePushbotMatrix extends HardwarePushbot {
+
     /* Public OpMode members. */
     private MatrixDcMotorController matrixMotorController = null;
     private ServoController matrixServoController = null;
