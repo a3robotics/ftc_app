@@ -13,7 +13,7 @@ public class MotorTest extends OpMode {
 
     public void init() {
         // In the app, go to config and set the motor name to "motorTest"
-        motorTest = hardwareMap.dcMotor.get("motorTest"); // Motor name
+        motorTest = hardwareMap.dcMotor.get("motorTest");
         motorTest.setPower(0);
     }
     public void start() {
