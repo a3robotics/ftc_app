@@ -16,6 +16,9 @@ public class MotorTest extends OpMode {
         // In the app, go to config and set the motor name to "motorTest"
         motorL = hardwareMap.dcMotor.get("motorLeft");
         motorR = hardwareMap.dcMotor.get("motorRight");
+        // left motor is backwards
+        motorL.setDirection(DcMotor.Direction.REVERSE);
+
         motorL.setPower(0);
         motorR.setPower(0);
     }
@@ -36,4 +39,5 @@ public class MotorTest extends OpMode {
         motorL.setPower(0);
         motorR.setPower(0);
     }
+
 }
