@@ -9,24 +9,31 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public class MotorTest extends OpMode {
 
     //Variables
-    private DcMotor motorTest;
+    private DcMotor motorL;
+    private DcMotor motorR;
 
     public void init() {
         // In the app, go to config and set the motor name to "motorTest"
-        motorTest = hardwareMap.dcMotor.get("motorTest");
-        motorTest.setPower(0);
+        motorL = hardwareMap.dcMotor.get("motorLeft");
+        motorR = hardwareMap.dcMotor.get("motorRight");
+        motorL.setPower(0);
+        motorR.setPower(0);
     }
     public void start() {
         // Nothing needs be done
     }
     public void loop() {
-        // get left joystick Y value
+        // get joystick Y values
         double leftY = gamepad1.left_stick_y;
+        double rightY = gamepad1.right_stick_y;
+
         // Set motor power to joystick Y value
-        motorTest.setPower(leftY);
+        motorL.setPower(leftY);
+        motorR.setPower(rightY);
     }
     public void stop() {
         // Stop the motor
-        motorTest.setPower(0);
+        motorL.setPower(0);
+        motorR.setPower(0);
     }
 }
