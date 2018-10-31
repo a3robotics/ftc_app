@@ -16,6 +16,7 @@ public class MotorTest extends OpMode {
         // In the app, go to config and set the motor name to "motorTest"
         motorL = hardwareMap.dcMotor.get("motorLeft");
         motorR = hardwareMap.dcMotor.get("motorRight");
+        // left motor is backwards
         motorL.setDirection(DcMotor.Direction.REVERSE);
 
         motorL.setPower(0);
@@ -30,7 +31,6 @@ public class MotorTest extends OpMode {
         double rightY = gamepad1.right_stick_y;
 
         // Set motor power to joystick Y value
-
         motorL.setPower(leftY);
         motorR.setPower(rightY);
     }
@@ -40,10 +40,4 @@ public class MotorTest extends OpMode {
         motorR.setPower(0);
     }
 
-    // todo function
-    void turn180() {
-        // set variables for encoder values
-        // while loop checking encoder value difference
-        // keep turning until they've gone a certain amount
-    }
 }
