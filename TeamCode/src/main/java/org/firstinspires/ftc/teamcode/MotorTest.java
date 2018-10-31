@@ -33,6 +33,11 @@ public class MotorTest extends OpMode {
         // Set motor power to joystick Y value
         motorL.setPower(leftY);
         motorR.setPower(rightY);
+
+        int motorLpos = motorL.getCurrentPosition();
+        telemetry.addData("Left Encoder Position:", motorLpos);
+        int motorRpos = motorR.getCurrentPosition();
+        telemetry.addData("Right Encoder Position:", motorRpos);
     }
     public void stop() {
         // Stop the motor
