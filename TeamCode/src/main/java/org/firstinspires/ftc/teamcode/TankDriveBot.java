@@ -4,8 +4,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name="TankDriveBot",group="TankDriveBot")
 public class TankDriveBot extends OpMode {
@@ -16,8 +16,8 @@ public class TankDriveBot extends OpMode {
     private DcMotor motorLift;
     private DcMotor motorArmRotate;
 
-    private Servo servoArmBase;
-    private Servo servoArmElbow;
+    //private Servo servoArmBase;
+    private CRServo servoArmElbow;
 
     public void init() {
         // In the app, go to config and set the motor names
@@ -26,8 +26,9 @@ public class TankDriveBot extends OpMode {
         motorLift = hardwareMap.dcMotor.get("motorLift");
         motorArmRotate = hardwareMap.dcMotor.get("motorArmRotate");
         //servos
-        servoArmBase = hardwareMap.servo.get("servoArmBase");
-        servoArmElbow = hardwareMap.servo.get("servoArmElbow");
+        //servoArmBase = hardwareMap.servo.get("servoArmBase");
+        servoArmElbow = hardwareMap.crservo.get("servoElbow");
+
         // left motor is backwards
         motorL.setDirection(DcMotor.Direction.REVERSE);
 
@@ -36,8 +37,8 @@ public class TankDriveBot extends OpMode {
         motorR.setPower(0);
         motorLift.setPower(0);
         motorArmRotate.setPower(0);
-        servoArmElbow.setPosition(0.5);
-        servoArmBase.setPosition(0.5);
+        servoArmElbow.setPower(0.5);
+        //servoArmBase.setPosition(0.5);
     }
     public void start() {
         // Nothing else needs be done
@@ -73,19 +74,19 @@ public class TankDriveBot extends OpMode {
         // Run servos
         //dpad up/down and left trigger/bumper
         if(gamepad1.dpad_up){
-            servoArmBase.setPosition(1);
+            servoArmElbow.setPower(1);
         }else if(gamepad1.dpad_down){
-            servoArmBase.setPosition(0);
+            servoArmElbow.setPower(-1);
         }else{
-            servoArmBase.setPosition(0.5);
+            servoArmElbow.setPower(0);
         }
-        if(gamepad1.left_bumper){
-            servoArmElbow.setPosition(1);
-        }else if(gamepad1.left_trigger > 0){ // being at all pressed
-            servoArmElbow.setPosition(0);
-        }else{
-            servoArmElbow.setPosition(0.5);
-        }
+//        if(gamepad1.left_bumper){
+//            servoArmBase.setPosition(1);
+//        }else if(gamepad1.left_trigger > 0){ // being at all pressed
+//            servoArmBase.setPosition(0);
+//        }else{
+//            servoArmBase.setPosition(0.5);
+//        }
 
         // Send telemetry data - drive encoders
         int motorLpos = motorL.getCurrentPosition();
@@ -105,8 +106,8 @@ public class TankDriveBot extends OpMode {
         motorR.setPower(0);
         motorLift.setPower(0);
         motorArmRotate.setPower(0);
-        servoArmElbow.setPosition(0.5);
-        servoArmBase.setPosition(0.5);
+        servoArmElbow.setPower(0);
+        //servoArmBase.setPosition(0.5);
     }
 
     // Extra functions
