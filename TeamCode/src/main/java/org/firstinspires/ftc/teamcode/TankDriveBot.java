@@ -12,21 +12,21 @@ public class TankDriveBot extends OpMode {
     private DcMotor motorL;
     private DcMotor motorR;
     private DcMotor motorLift;
-    private DcMotor armRotate;
+    private DcMotor motorArmRotate;
 
     public void init() {
         // In the app, go to config and set the motor names
         motorL = hardwareMap.dcMotor.get("motorLeft");
         motorR = hardwareMap.dcMotor.get("motorRight");
         motorLift = hardwareMap.dcMotor.get("motorLift");
-        armRotate = hardwareMap.dcMotor.get("armRotate");
+        motorArmRotate = hardwareMap.dcMotor.get("motorArmRotate");
         // left motor is backwards
         motorL.setDirection(DcMotor.Direction.REVERSE);
 
         motorL.setPower(0);
         motorR.setPower(0);
         motorLift.setPower(0);
-        armRotate.setPower(0);
+        motorArmRotate.setPower(0);
     }
     public void start() {
         // Nothing needs be done
@@ -40,6 +40,7 @@ public class TankDriveBot extends OpMode {
         // Set motor power to joystick Y value
         motorL.setPower(leftY*driveSpeedFactor);
         motorR.setPower(rightY*driveSpeedFactor);
+
         // Use dpad to lift and lower lift
         if(gamepad1.dpad_up){
             motorLift.setPower(-0.5); // half speed per too much rpm
@@ -48,10 +49,15 @@ public class TankDriveBot extends OpMode {
         }else{
             motorLift.setPower(0);
         }
-        //rotate the base of the arm
-        if(gamepad1.left_bumper) armRotate.setPower(-.5);
-        else if(gamepad1.right_bumper) armRotate.setPower(.5);
-        else armRotate.setPower(0);
+
+        // Use dpad to rotate arm on lift
+        if(gamepad1.dpad_left){
+            motorArmRotate.setPower(-0.1); // low speed
+        }else if(gamepad1.dpad_right){
+            motorArmRotate.setPower(0.1);
+        }else{
+            motorArmRotate.setPower(0);
+        }
 
         // Send telemetry data - drive encoders
         int motorLpos = motorL.getCurrentPosition();
@@ -62,7 +68,7 @@ public class TankDriveBot extends OpMode {
         int motorLiftPos = motorLift.getCurrentPosition();
         telemetry.addData("Lift Encoder:",motorLiftPos);
         //Arm rotation encoder
-        int motorArmPos = armRotate.getCurrentPosition();
+        int motorArmPos = motorArmRotate.getCurrentPosition();
         telemetry.addData("Arm Rotation Encoder:",motorLiftPos);
     }
     public void stop() {
@@ -70,7 +76,7 @@ public class TankDriveBot extends OpMode {
         motorL.setPower(0);
         motorR.setPower(0);
         motorLift.setPower(0);
-        armRotate.setPower(0);
+        motorArmRotate.setPower(0);
     }
 
 }
