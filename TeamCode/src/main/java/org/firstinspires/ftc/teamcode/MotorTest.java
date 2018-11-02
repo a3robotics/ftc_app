@@ -60,6 +60,7 @@ public class MotorTest extends OpMode {
         // Stop the motor
         motorL.setPower(0);
         motorR.setPower(0);
+        motorLift.setPower(0);
     }
 
 }
