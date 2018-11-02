@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp(name="MotorTest",group="MotorTest")
-public class MotorTest extends OpMode {
+@TeleOp(name="TankDriveBot",group="TankDriveBot")
+public class TankDriveBot extends OpMode {
 
     //Variables
     private DcMotor motorL;
