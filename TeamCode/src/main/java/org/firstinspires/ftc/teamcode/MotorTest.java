@@ -33,16 +33,16 @@ public class MotorTest extends OpMode {
         double leftY = gamepad1.left_stick_y;
         double rightY = gamepad1.right_stick_y;
 
-        float driveSpeedFactor = 2/3;
+        double driveSpeedFactor = 0.75;
         // Set motor power to joystick Y value
         motorL.setPower(leftY*driveSpeedFactor);
         motorR.setPower(rightY*driveSpeedFactor);
 
-        // Use right trigger to lift and lower lift
+        // Use dpad to lift and lower lift
         if(gamepad1.dpad_up){
-            motorLift.setPower(1);
+            motorLift.setPower(0.5); // half speed per too much rpm
         }else if(gamepad1.dpad_down){
-            motorLift.setPower(-1);
+            motorLift.setPower(-0.5);
         }else{
             motorLift.setPower(0);
         }
