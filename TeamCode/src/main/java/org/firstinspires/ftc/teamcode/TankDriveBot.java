@@ -69,7 +69,7 @@ public class TankDriveBot extends OpMode {
         telemetry.addData("Lift Encoder:",motorLiftPos);
         //Arm rotation encoder
         int motorArmPos = motorArmRotate.getCurrentPosition();
-        telemetry.addData("Arm Rotation Encoder:",motorLiftPos);
+        telemetry.addData("Arm Rotation Encoder:",motorArmPos);
     }
     public void stop() {
         // Stop the motor
