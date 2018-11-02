@@ -40,9 +40,9 @@ public class MotorTest extends OpMode {
 
         // Use dpad to lift and lower lift
         if(gamepad1.dpad_up){
-            motorLift.setPower(0.5); // half speed per too much rpm
+            motorLift.setPower(-0.5); // half speed per too much rpm
         }else if(gamepad1.dpad_down){
-            motorLift.setPower(-0.5);
+            motorLift.setPower(0.5);
         }else{
             motorLift.setPower(0);
         }
