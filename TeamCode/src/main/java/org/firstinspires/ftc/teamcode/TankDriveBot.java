@@ -31,16 +31,15 @@ public class TankDriveBot extends OpMode {
         // left motor is backwards
         motorL.setDirection(DcMotor.Direction.REVERSE);
 
+        // Start with all motors stopped
         motorL.setPower(0);
         motorR.setPower(0);
         motorLift.setPower(0);
         motorArmRotate.setPower(0);
+        servoArmElbow.setPosition(0.5);
+        servoArmBase.setPosition(0.5);
     }
     public void start() {
-        // Set servos to init pos
-        servoArmElbow.setPosition(0);
-        servoArmBase.setPosition(0);
-
         // Nothing else needs be done
     }
     public void loop() {
@@ -74,14 +73,18 @@ public class TankDriveBot extends OpMode {
         // Run servos
         //dpad up/down and left trigger/bumper
         if(gamepad1.dpad_up){
-            servoArmBase.setPosition( servoArmBase.getPosition() + 0.05 ); // Add a tiny bit to the position
+            servoArmBase.setPosition(1);
         }else if(gamepad1.dpad_down){
-            servoArmBase.setPosition( servoArmBase.getPosition() - 0.05 ); // Sub a tiny bit from the position
+            servoArmBase.setPosition(0);
+        }else{
+            servoArmBase.setPosition(0.5);
         }
         if(gamepad1.left_bumper){
-            servoArmElbow.setPosition( servoArmElbow.getPosition() + 0.05 ); // Add a tiny bit to the position
+            servoArmElbow.setPosition(1);
         }else if(gamepad1.left_trigger > 0){ // being at all pressed
-            servoArmElbow.setPosition( servoArmElbow.getPosition() - 0.05 ); // Sub a tiny bit from the position
+            servoArmElbow.setPosition(0);
+        }else{
+            servoArmElbow.setPosition(0.5);
         }
 
         // Send telemetry data - drive encoders
@@ -97,11 +100,13 @@ public class TankDriveBot extends OpMode {
         telemetry.addData("Arm Rotation Encoder:",motorArmPos);
     }
     public void stop() {
-        // Stop the motor
+        // Stop all motors
         motorL.setPower(0);
         motorR.setPower(0);
         motorLift.setPower(0);
         motorArmRotate.setPower(0);
+        servoArmElbow.setPosition(0.5);
+        servoArmBase.setPosition(0.5);
     }
 
     // Extra functions
