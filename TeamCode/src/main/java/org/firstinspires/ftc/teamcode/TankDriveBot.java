@@ -39,10 +39,13 @@ public class TankDriveBot extends OpMode {
         motorArmRotate.setPower(0);
         servoArmElbow.setPower(0.5);
         //servoArmBase.setPosition(0.5);
+
     }
+
     public void start() {
         // Nothing else needs be done
     }
+
     public void loop() {
         // get joystick Y values
         double leftY = gamepad1.left_stick_y;
@@ -61,6 +64,7 @@ public class TankDriveBot extends OpMode {
         }else{
             motorLift.setPower(0);
         }
+        //-16000
 
         // Use dpad to rotate arm on lift
         if(gamepad1.dpad_left){
@@ -80,13 +84,6 @@ public class TankDriveBot extends OpMode {
         }else{
             servoArmElbow.setPower(0);
         }
-//        if(gamepad1.left_bumper){
-//            servoArmBase.setPosition(1);
-//        }else if(gamepad1.left_trigger > 0){ // being at all pressed
-//            servoArmBase.setPosition(0);
-//        }else{
-//            servoArmBase.setPosition(0.5);
-//        }
 
         // Send telemetry data - drive encoders
         int motorLpos = motorL.getCurrentPosition();
@@ -99,7 +96,9 @@ public class TankDriveBot extends OpMode {
         //Arm rotation encoder
         int motorArmPos = motorArmRotate.getCurrentPosition();
         telemetry.addData("Arm Rotation Encoder:",motorArmPos);
+
     }
+
     public void stop() {
         // Stop all motors
         motorL.setPower(0);
@@ -109,8 +108,5 @@ public class TankDriveBot extends OpMode {
         servoArmElbow.setPower(0);
         //servoArmBase.setPosition(0.5);
     }
-
-    // Extra functions
-
 
 }
