@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import static java.lang.Math.abs;
+
 @TeleOp(name="TankDriveBot",group="TankDriveBot")
 public class TankDriveBot extends OpMode {
 
@@ -97,7 +99,27 @@ public class TankDriveBot extends OpMode {
         int motorArmPos = motorArmRotate.getCurrentPosition();
         telemetry.addData("Arm Rotation Encoder:",motorArmPos);
 
+
+        autoLand(abs(16000), motorLift, gamepad1.x);
+        //The function autoLand is responsible for autonomous landing. The first value is what
+        // encoder value the lifting motor has when fully extended, the second is the DcMotor used
+        // for lifting/landing, the third is the encoder value of the lifting motor, and the fourth
+        // is a boolean value for what button is used to start the function. The function will
+        // (ideally) end when the motor is fully extended. I may modify it if it works better by
+        // using time instead.
     }
+
+
+    private void autoLand(int encode, DcMotor lifter, boolean button) {
+        int lifterPos = abs(motorLift.getCurrentPosition());
+        if (button) {
+            while (lifterPos <= encode) {
+                lifterPos = abs(motorLift.getCurrentPosition());
+                lifter.setPower(0.5);
+            }
+        }
+    }
+
 
     public void stop() {
         // Stop all motors
