@@ -89,17 +89,7 @@ public class TankDriveBot extends OpMode {
             servoArmElbow.setPower(0);
         }
 
-        // Send telemetry data - drive encoders
-        int motorLpos = motorL.getCurrentPosition();
-        telemetry.addData("Left Encoder Position:", motorLpos);
-        int motorRpos = motorR.getCurrentPosition();
-        telemetry.addData("Right Encoder Position:", motorRpos);
-        // Lift encoder
-        int motorLiftPos = motorLift.getCurrentPosition();
-        telemetry.addData("Lift Encoder:",motorLiftPos);
-        //Arm rotation encoder
-        int motorArmPos = motorArmRotate.getCurrentPosition();
-        telemetry.addData("Arm Rotation Encoder:",motorArmPos);
+        getTelemetryData();
 
     }
 
@@ -111,6 +101,20 @@ public class TankDriveBot extends OpMode {
         motorArmRotate.setPower(0);
         servoArmElbow.setPower(0);
         //servoArmBase.setPosition(0.5);
+    }
+
+    private void getTelemetryData() {
+        // Send telemetry data - drive encoders
+        int motorLpos = motorL.getCurrentPosition();
+        telemetry.addData("Left Encoder Position:", motorLpos);
+        int motorRpos = motorR.getCurrentPosition();
+        telemetry.addData("Right Encoder Position:", motorRpos);
+        // Lift encoder
+        int motorLiftPos = motorLift.getCurrentPosition();
+        telemetry.addData("Lift Encoder:",motorLiftPos);
+        //Arm rotation encoder
+        int motorArmPos = motorArmRotate.getCurrentPosition();
+        telemetry.addData("Arm Rotation Encoder:",motorArmPos);
     }
 
 }
