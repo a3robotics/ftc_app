@@ -19,6 +19,10 @@ public class TankDriveBot extends OpMode {
     //private Servo servoArmBase;
     private CRServo servoArmElbow;
 
+    // encoder vals
+    private int liftUpperLimit = -16000;
+    private int liftLowerLimit = 0;
+
     public void init() {
         // In the app, go to config and set the motor names
         motorL = hardwareMap.dcMotor.get("motorLeft");
@@ -37,7 +41,7 @@ public class TankDriveBot extends OpMode {
         motorR.setPower(0);
         motorLift.setPower(0);
         motorArmRotate.setPower(0);
-        servoArmElbow.setPower(0.5);
+        servoArmElbow.setPower(0);
         //servoArmBase.setPosition(0.5);
 
     }
@@ -57,9 +61,9 @@ public class TankDriveBot extends OpMode {
         motorR.setPower(rightY*driveSpeedFactor);
 
         // Use right trigger and bumper to lift and lower lift
-        if(gamepad1.right_bumper){
+        if(gamepad1.right_bumper && (motorLift.getCurrentPosition()>liftUpperLimit || gamepad1.y)){
             motorLift.setPower(-0.5); // half speed per too much rpm
-        }else if(gamepad1.right_trigger > 0){ // being at all pressed
+        }else if(gamepad1.right_trigger > 0 && (motorLift.getCurrentPosition()<liftLowerLimit || gamepad1.y)){ // being at all pressed
             motorLift.setPower(0.5);
         }else{
             motorLift.setPower(0);
@@ -85,17 +89,7 @@ public class TankDriveBot extends OpMode {
             servoArmElbow.setPower(0);
         }
 
-        // Send telemetry data - drive encoders
-        int motorLpos = motorL.getCurrentPosition();
-        telemetry.addData("Left Encoder Position:", motorLpos);
-        int motorRpos = motorR.getCurrentPosition();
-        telemetry.addData("Right Encoder Position:", motorRpos);
-        // Lift encoder
-        int motorLiftPos = motorLift.getCurrentPosition();
-        telemetry.addData("Lift Encoder:",motorLiftPos);
-        //Arm rotation encoder
-        int motorArmPos = motorArmRotate.getCurrentPosition();
-        telemetry.addData("Arm Rotation Encoder:",motorArmPos);
+        getTelemetryData();
 
     }
 
@@ -107,6 +101,20 @@ public class TankDriveBot extends OpMode {
         motorArmRotate.setPower(0);
         servoArmElbow.setPower(0);
         //servoArmBase.setPosition(0.5);
+    }
+
+    private void getTelemetryData() {
+        // Send telemetry data - drive encoders
+        int motorLpos = motorL.getCurrentPosition();
+        telemetry.addData("Left Encoder Position:", motorLpos);
+        int motorRpos = motorR.getCurrentPosition();
+        telemetry.addData("Right Encoder Position:", motorRpos);
+        // Lift encoder
+        int motorLiftPos = motorLift.getCurrentPosition();
+        telemetry.addData("Lift Encoder:",motorLiftPos);
+        //Arm rotation encoder
+        int motorArmPos = motorArmRotate.getCurrentPosition();
+        telemetry.addData("Arm Rotation Encoder:",motorArmPos);
     }
 
 }
