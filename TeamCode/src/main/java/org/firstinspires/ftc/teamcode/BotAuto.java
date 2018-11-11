@@ -14,6 +14,8 @@ public class BotAuto extends LinearOpMode {
     private int liftUpperLimit = -16000;
     private int liftLowerLimit = 0;
 
+    // y u no get this
+
     public void runOpMode() {
         lowerFromLift();
     }
