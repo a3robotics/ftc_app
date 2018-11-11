@@ -94,7 +94,7 @@ public class TankDriveBot extends OpMode {
         getTelemetryData();
 
 
-        autoLand(abs(16000), motorLift, gamepad1.x);
+        autoLand(14000, motorLift, gamepad1.x);
         //The function autoLand is responsible for autonomous landing. The first value is what
         // encoder value the lifting motor has when fully extended, the second is the DcMotor used
         // for lifting/landing, the third is the encoder value of the lifting motor, and the fourth
@@ -106,10 +106,12 @@ public class TankDriveBot extends OpMode {
 
     private void autoLand(int encode, DcMotor lifter, boolean button) {
         int lifterPos = abs(motorLift.getCurrentPosition());
+
         if (button) {
             while (lifterPos <= encode) {
                 lifterPos = abs(motorLift.getCurrentPosition());
-                lifter.setPower(0.5);
+                telemetry.addData("Lift Encoder (loop):", lifterPos);
+                lifter.setPower(-0.5);
             }
         }
     }

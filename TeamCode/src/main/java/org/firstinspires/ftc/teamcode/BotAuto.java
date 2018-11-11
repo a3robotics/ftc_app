@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import static java.lang.Math.abs;
+
 @Autonomous(name="Auto", group="Auto")
 public class BotAuto extends LinearOpMode {
 
@@ -11,7 +13,7 @@ public class BotAuto extends LinearOpMode {
     private DcMotor motorR;
     private DcMotor motorLift;
 
-    private int liftUpperLimit = -16000;
+    private int liftUpperLimit = abs(16000);
     private int liftLowerLimit = 0;
 
     // y u no get this
