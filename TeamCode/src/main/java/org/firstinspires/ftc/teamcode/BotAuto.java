@@ -20,7 +20,7 @@ public class BotAuto extends LinearOpMode {
 
     // Functions for autonomous
     private void lowerFromLift() {
-        // Lower lift
+        // extend lift
         while(motorLift.getCurrentPosition() < liftUpperLimit){
             motorLift.setPower(-0.5);
             telemetry.addData("Lift Encoder:",motorLift.getCurrentPosition());
