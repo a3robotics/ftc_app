@@ -4,41 +4,54 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import static java.lang.Math.abs;
-
-@Autonomous(name="Auto", group="Auto")
+@Autonomous(name="BotAuto", group="BotAuto")
 public class BotAuto extends LinearOpMode {
 
     private DcMotor motorL;
     private DcMotor motorR;
     private DcMotor motorLift;
 
-    private int liftUpperLimit = abs(16000);
+    private int liftUpperLimit = -16000;
     private int liftLowerLimit = 0;
 
-    // y u no get this
-
     public void runOpMode() {
+
+        motorL = hardwareMap.dcMotor.get("motorLeft");
+        motorR = hardwareMap.dcMotor.get("motorRight");
+        motorLift = hardwareMap.dcMotor.get("motorLift");
+
+        motorL.setPower(0);
+        motorR.setPower(0);
+        motorLift.setPower(0);
+        motorL.setDirection(DcMotor.Direction.REVERSE);
+        motorLift.setDirection(DcMotor.Direction.REVERSE);
+
+        waitForStart();
+
+
         lowerFromLift();
+
     }
 
     // Functions for autonomous
     private void lowerFromLift() {
         // extend lift
         while(motorLift.getCurrentPosition() < liftUpperLimit){
-            motorLift.setPower(-0.5);
+            motorLift.setPower(-0.25);
             telemetry.addData("Lift Encoder:",motorLift.getCurrentPosition());
         }
+        sleep(1000);
         // Then, back up robot
         while(motorL.getCurrentPosition()>-1000&&motorL.getCurrentPosition()>-1000){ // 1000 picked as an arbitrary value. Optimize this.
-            motorL.setPower(-0.5);
-            motorR.setPower(-0.5);
+            motorL.setPower(-0.25);
+            motorR.setPower(-0.25);
             telemetry.addData("Left Encoder Position:", motorL.getCurrentPosition());
             telemetry.addData("Right Encoder Position:", motorR.getCurrentPosition());
         }
+        sleep(1000);
         // Then, retract lift arm
         while(motorLift.getCurrentPosition() > liftLowerLimit){
-            motorLift.setPower(0.5);
+            motorLift.setPower(0.25);
             telemetry.addData("Lift Encoder:",motorLift.getCurrentPosition());
         }
     }
