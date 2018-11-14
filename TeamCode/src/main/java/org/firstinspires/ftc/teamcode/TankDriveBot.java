@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import static java.lang.Math.abs;
+
 @TeleOp(name="TankDriveBot",group="TankDriveBot")
 public class TankDriveBot extends OpMode {
 
@@ -18,9 +20,10 @@ public class TankDriveBot extends OpMode {
 
     //private Servo servoArmBase;
     private CRServo servoArmElbow;
+    private CRServo servoArmElbow2;
 
     // encoder vals
-    private int liftUpperLimit = -16000;
+    private int liftUpperLimit = 16000;
     private int liftLowerLimit = 0;
 
     public void init() {
@@ -32,10 +35,10 @@ public class TankDriveBot extends OpMode {
         //servos
         //servoArmBase = hardwareMap.servo.get("servoArmBase");
         servoArmElbow = hardwareMap.crservo.get("servoElbow");
+        servoArmElbow2 = hardwareMap.crservo.get("servoElbow2");
 
         // left motor is backwards
         motorL.setDirection(DcMotor.Direction.REVERSE);
-        motorLift.setDirection(DcMotor.Direction.REVERSE);
 
         // Start with all motors stopped
         motorL.setPower(0);
@@ -43,6 +46,7 @@ public class TankDriveBot extends OpMode {
         motorLift.setPower(0);
         motorArmRotate.setPower(0);
         servoArmElbow.setPower(0);
+        servoArmElbow2.setPower(0);
         //servoArmBase.setPosition(0.5);
 
     }
@@ -58,41 +62,91 @@ public class TankDriveBot extends OpMode {
 
         double driveSpeedFactor = 0.75;
         // Set motor power to joystick Y value
-        motorL.setPower(leftY*driveSpeedFactor);
-        motorR.setPower(rightY*driveSpeedFactor);
+        motorL.setPower(leftY * driveSpeedFactor);
+        motorR.setPower(rightY * driveSpeedFactor);
 
         // Use right trigger and bumper to lift and lower lift
-        if(gamepad1.right_bumper && (motorLift.getCurrentPosition()>liftUpperLimit || gamepad1.y)){
+        if (gamepad1.right_bumper && (motorLift.getCurrentPosition() > liftUpperLimit || gamepad1.y)) {
             motorLift.setPower(-0.5); // half speed per too much rpm
-        }else if(gamepad1.right_trigger > 0 && (motorLift.getCurrentPosition()<liftLowerLimit || gamepad1.y)){ // being at all pressed
+        } else if (gamepad1.right_trigger > 0 && (motorLift.getCurrentPosition() < liftLowerLimit || gamepad1.y)) { // being at all pressed
             motorLift.setPower(0.5);
-        }else{
+        } else {
             motorLift.setPower(0);
         }
         //-16000
 
         // Use dpad to rotate arm on lift
-        if(gamepad1.dpad_left){
+        if (gamepad1.dpad_left) {
             motorArmRotate.setPower(-0.1); // low speed
-        }else if(gamepad1.dpad_right){
+        } else if (gamepad1.dpad_right) {
             motorArmRotate.setPower(0.1);
-        }else{
+        } else {
             motorArmRotate.setPower(0);
         }
 
         // Run servos
         //dpad up/down and left trigger/bumper
-        if(gamepad1.dpad_up){
-            servoArmElbow.setPower(1);
-        }else if(gamepad1.dpad_down){
-            servoArmElbow.setPower(-1);
-        }else{
+        if (gamepad1.dpad_up) {
+            servoArmElbow.setPower(.5);
+        } else if (gamepad1.dpad_down) {
+            servoArmElbow.setPower(-.5);
+        } else {
             servoArmElbow.setPower(0);
         }
+        //second joint of the arm
+        if(gamepad1.left_bumper) servoArmElbow2.setPower(.5);
+        else if(gamepad1.left_trigger > 0) servoArmElbow2.setPower(-.5);
+        else servoArmElbow.setPower(0);
 
         getTelemetryData();
 
+        double motorLiftPos = abs(motorLift.getCurrentPosition());
+
+        if (gamepad1.x) {
+            while (motorLiftPos < 8000.0) {
+                motorLiftPos = abs(motorLift.getCurrentPosition());
+                telemetry.addData("Lift Encoder (loop):", motorLiftPos);
+                motorLift.setPower(-1);
+            }
+            motorLift.setPower(0);
+        }
+        if (gamepad1.x) {
+            if (motorLiftPos > 8000) {
+                while (motorLiftPos < 16000) {
+                    motorLiftPos = abs(motorLift.getCurrentPosition());
+                    motorLift.setPower(-1);
+                }
+            }
+            motorLift.setPower(0);
+        }
     }
+
+        //autoLand(14000, motorLift, gamepad1.x);
+
+        //The function autoLand is responsible for autonomous landing. The first value is what
+        // encoder value the lifting motor has when fully extended, the second is the DcMotor used
+        // for lifting/landing, the third is the encoder value of the lifting motor, and the fourth
+        // is a boolean value for what button is used to start the function. The function will
+        // (ideally) end when the motor is fully extended. I may modify it if it works better by
+        // using time instead.
+    //}
+
+
+//    private void autoLand(int encode, DcMotor lifter, boolean button) {
+//        int lifterPos = abs(lifter.getCurrentPosition());
+//
+//        if (button) {
+//            while (lifterPos <= encode) {
+//                lifterPos = abs(lifter.getCurrentPosition());
+//                telemetry.addData("Lift Encoder (loop):", lifterPos);
+//                lifter.setPower(-0.5);
+//                if(lifterPos >= encode) {
+//                    lifter.setPower(0);
+//                    break;
+//                }
+//            }
+//        }
+//    }
 
 
     public void stop() {
@@ -102,6 +156,7 @@ public class TankDriveBot extends OpMode {
         motorLift.setPower(0);
         motorArmRotate.setPower(0);
         servoArmElbow.setPower(0);
+        //servoArmBase.setPosition(0.5);
     }
 
     private void getTelemetryData() {
@@ -111,7 +166,7 @@ public class TankDriveBot extends OpMode {
         int motorRpos = motorR.getCurrentPosition();
         telemetry.addData("Right Encoder Position:", motorRpos);
         // Lift encoder
-        int motorLiftPos = motorLift.getCurrentPosition();
+        int motorLiftPos = abs(motorLift.getCurrentPosition());
         telemetry.addData("Lift Encoder:",motorLiftPos);
         //Arm rotation encoder
         int motorArmPos = motorArmRotate.getCurrentPosition();
