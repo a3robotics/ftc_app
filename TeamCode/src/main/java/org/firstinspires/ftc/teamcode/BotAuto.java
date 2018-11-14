@@ -11,7 +11,7 @@ public class BotAuto extends LinearOpMode {
     private DcMotor motorR;
     private DcMotor motorLift;
 
-    private int liftUpperLimit = -16000;
+    private int liftUpperLimit = 16000;
     private int liftLowerLimit = 0;
 
     public void runOpMode() {
@@ -36,23 +36,26 @@ public class BotAuto extends LinearOpMode {
     // Functions for autonomous
     private void lowerFromLift() {
         // extend lift
-        while(motorLift.getCurrentPosition() < liftUpperLimit){
-            motorLift.setPower(-0.25);
+        while(motorLift.getCurrentPosition() < liftUpperLimit && opModeIsActive()){
+            motorLift.setPower(0.25);
             telemetry.addData("Lift Encoder:",motorLift.getCurrentPosition());
+            if(gamepad1.x) break;
         }
         sleep(1000);
         // Then, back up robot
-        while(motorL.getCurrentPosition()>-1000&&motorL.getCurrentPosition()>-1000){ // 1000 picked as an arbitrary value. Optimize this.
+        while(motorL.getCurrentPosition()>-1000&&motorL.getCurrentPosition()>-1000 && opModeIsActive()){ // 1000 picked as an arbitrary value. Optimize this.
             motorL.setPower(-0.25);
             motorR.setPower(-0.25);
             telemetry.addData("Left Encoder Position:", motorL.getCurrentPosition());
             telemetry.addData("Right Encoder Position:", motorR.getCurrentPosition());
+            if(gamepad1.x) break;
         }
         sleep(1000);
         // Then, retract lift arm
-        while(motorLift.getCurrentPosition() > liftLowerLimit){
-            motorLift.setPower(0.25);
+        while(motorLift.getCurrentPosition() > liftLowerLimit && opModeIsActive()){
+            motorLift.setPower(-0.25);
             telemetry.addData("Lift Encoder:",motorLift.getCurrentPosition());
+            if(gamepad1.x) break;
         }
     }
 
