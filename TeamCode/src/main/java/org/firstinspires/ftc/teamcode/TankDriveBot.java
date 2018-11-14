@@ -96,7 +96,7 @@ public class TankDriveBot extends OpMode {
         //second joint of the arm
         if(gamepad1.left_bumper) servoArmElbow2.setPower(.5);
         else if(gamepad1.left_trigger > 0) servoArmElbow2.setPower(-.5);
-        else servoArmElbow.setPower(0);
+        else servoArmElbow2.setPower(0);
 
         getTelemetryData();
 

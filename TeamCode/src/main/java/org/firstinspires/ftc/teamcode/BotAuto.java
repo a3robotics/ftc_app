@@ -41,6 +41,7 @@ public class BotAuto extends LinearOpMode {
             telemetry.addData("Lift Encoder:",motorLift.getCurrentPosition());
             if(gamepad1.x) break;
         }
+        motorLift.setPower(0);
         sleep(1000);
         // Then, back up robot
         while(motorL.getCurrentPosition()>-1000&&motorL.getCurrentPosition()>-1000 && opModeIsActive()){ // 1000 picked as an arbitrary value. Optimize this.
