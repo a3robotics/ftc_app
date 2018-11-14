@@ -39,7 +39,6 @@ public class BotAuto extends LinearOpMode {
         while(motorLift.getCurrentPosition() < liftUpperLimit && opModeIsActive()){
             motorLift.setPower(0.25);
             telemetry.addData("Lift Encoder:",motorLift.getCurrentPosition());
-            if(gamepad1.x) break;
         }
         sleep(1000);
         // Then, back up robot
@@ -48,15 +47,12 @@ public class BotAuto extends LinearOpMode {
             motorR.setPower(-0.25);
             telemetry.addData("Left Encoder Position:", motorL.getCurrentPosition());
             telemetry.addData("Right Encoder Position:", motorR.getCurrentPosition());
-            if(gamepad1.x) break;
         }
         sleep(1000);
         // Then, retract lift arm
         while(motorLift.getCurrentPosition() > liftLowerLimit && opModeIsActive()){
             motorLift.setPower(-0.25);
             telemetry.addData("Lift Encoder:",motorLift.getCurrentPosition());
-            if(gamepad1.x) break;
         }
     }
-
 }
