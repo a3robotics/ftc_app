@@ -10,11 +10,16 @@ public class BotAuto extends LinearOpMode {
     private DcMotor motorL;
     private DcMotor motorR;
     private DcMotor motorLift;
+    private Robot robot = new Robot();
 
     private int liftUpperLimit = 16000;
     private int liftLowerLimit = 0;
 
     public void runOpMode() {
+
+        robot.resetEncoders(motorL);
+        robot.resetEncoders(motorR);
+        robot.resetEncoders(motorLift);
 
         motorL = hardwareMap.dcMotor.get("motorLeft");
         motorR = hardwareMap.dcMotor.get("motorRight");
@@ -81,6 +86,8 @@ public class BotAuto extends LinearOpMode {
                 while(encoderRadiansL < rotateRad && encoderRadiansR < rotateRad) {
                     motorR.setPower(0.5);
                     motorL.setPower(0.5);
+                    encoderRadiansL = motorL.getCurrentPosition()*3.14159/180;
+                    encoderRadiansR = motorR.getCurrentPosition()*3.14159/180;
                 }
             }
         }else if(rotate == 0){
@@ -88,11 +95,15 @@ public class BotAuto extends LinearOpMode {
             while(encoderRadiansL < rotateRad && encoderRadiansR < rotateRad) {
                 motorR.setPower(0.5);
                 motorL.setPower(0.5);
+                encoderRadiansL = motorL.getCurrentPosition()*3.14159/180;
+                encoderRadiansR = motorR.getCurrentPosition()*3.14159/180;
             }
 
         }else {
             // error!
+            telemetry.addData("ERROR", "Arguments of drive() conflict");
+
         }
-        //FOR RESETTING MOTORS: motorL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //FOR RESETTING MOTORS: motorL.(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }
