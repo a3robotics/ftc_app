@@ -119,43 +119,14 @@ public class TankDriveBot extends OpMode {
             }
             motorLift.setPower(0);
         }
+
+        if(gamepad1.b && gamepad1.a && gamepad1.x && gamepad1.y){
+            killRobot();
+        }
     }
 
-        //autoLand(14000, motorLift, gamepad1.x);
-
-        //The function autoLand is responsible for autonomous landing. The first value is what
-        // encoder value the lifting motor has when fully extended, the second is the DcMotor used
-        // for lifting/landing, the third is the encoder value of the lifting motor, and the fourth
-        // is a boolean value for what button is used to start the function. The function will
-        // (ideally) end when the motor is fully extended. I may modify it if it works better by
-        // using time instead.
-    //}
-
-
-//    private void autoLand(int encode, DcMotor lifter, boolean button) {
-//        int lifterPos = abs(lifter.getCurrentPosition());
-//
-//        if (button) {
-//            while (lifterPos <= encode) {
-//                lifterPos = abs(lifter.getCurrentPosition());
-//                telemetry.addData("Lift Encoder (loop):", lifterPos);
-//                lifter.setPower(-0.5);
-//                if(lifterPos >= encode) {
-//                    lifter.setPower(0);
-//                    break;
-//                }
-//            }
-//        }
-//    }
-
-
     public void stop() {
-        // Stop all motors
-        motorL.setPower(0);
-        motorR.setPower(0);
-        motorLift.setPower(0);
-        motorArmRotate.setPower(0);
-        servoArmElbow.setPower(0);
+        killRobot();
         //servoArmBase.setPosition(0.5);
     }
 
@@ -171,6 +142,15 @@ public class TankDriveBot extends OpMode {
         //Arm rotation encoder
         int motorArmPos = motorArmRotate.getCurrentPosition();
         telemetry.addData("Arm Rotation Encoder:",motorArmPos);
+    }
+
+    private void killRobot() {
+        // Stop all motors
+        motorL.setPower(0);
+        motorR.setPower(0);
+        motorLift.setPower(0);
+        motorArmRotate.setPower(0);
+        servoArmElbow.setPower(0);
     }
 
 }
