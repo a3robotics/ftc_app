@@ -49,6 +49,7 @@ public class BotAuto extends LinearOpMode {
             telemetry.addData("Left Encoder Position:", motorL.getCurrentPosition());
             telemetry.addData("Right Encoder Position:", motorR.getCurrentPosition());
         }
+        motorLift.setPower(0);
         sleep(1000);
         // Then, retract lift arm
         while(motorLift.getCurrentPosition() > liftLowerLimit && opModeIsActive()){
