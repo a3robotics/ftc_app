@@ -120,7 +120,7 @@ public class TankDriveBot extends OpMode {
             motorLift.setPower(0);
         }
 
-        if(gamepad1.b && gamepad1.a && gamepad1.x && gamepad1.y){
+        if(gamepad1.back){
             killRobot();
         }
     }
@@ -151,6 +151,7 @@ public class TankDriveBot extends OpMode {
         motorLift.setPower(0);
         motorArmRotate.setPower(0);
         servoArmElbow.setPower(0);
+        servoArmElbow2.setPower(0);
     }
 
 }
