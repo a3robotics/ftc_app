@@ -31,6 +31,8 @@ public class BotAuto extends LinearOpMode {
 
         lowerFromLift();
 
+        killRobot();
+
     }
 
     // Functions for autonomous
@@ -56,5 +58,12 @@ public class BotAuto extends LinearOpMode {
             motorLift.setPower(-0.25);
             telemetry.addData("Lift Encoder:",motorLift.getCurrentPosition());
         }
+    }
+
+    private void killRobot() {
+        // Stop all motors
+        motorL.setPower(0);
+        motorR.setPower(0);
+        motorLift.setPower(0);
     }
 }
