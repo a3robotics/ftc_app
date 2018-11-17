@@ -80,7 +80,7 @@ public class BotAuto extends LinearOpMode {
                 telemetry.addData("ERROR", "Both arguments of drive() are zero");
             } else {
                 double rotateRad = rotate * 3.14159 / 180;
-                while (encoderRadiansL < rotateRad && encoderRadiansR < rotateRad) {
+                while (encoderRadiansL < rotateRad && encoderRadiansR < rotateRad && opModeIsActive()) {
                     motorR.setPower(0.5);
                     motorL.setPower(0.5);
                     // don't forget to update encoder values
@@ -90,7 +90,7 @@ public class BotAuto extends LinearOpMode {
             }
         } else if (rotate == 0) {
             double rotateRad = distance / r * 180 / 3.14159; //radians
-            while (encoderRadiansL < rotateRad && encoderRadiansR < rotateRad) {
+            while (encoderRadiansL < rotateRad && encoderRadiansR < rotateRad && opModeIsActive()) {
                 motorR.setPower(0.5);
                 motorL.setPower(0.5);
                 encoderRadiansL = motorL.getCurrentPosition() * 3.14159 / 180;
