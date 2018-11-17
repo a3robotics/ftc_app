@@ -54,9 +54,9 @@ public class BotAuto extends LinearOpMode {
         motorLift.setPower(0);
         sleep(1000);
         // Then, forward robot
-        while (motorL.getCurrentPosition() > -1000 && motorL.getCurrentPosition() > -1000 && opModeIsActive()) { // 1000 picked as an arbitrary value. Optimize this.
-            motorL.setPower(0.25);
-            motorR.setPower(0.25);
+        while (motorL.getCurrentPosition() > -30 && motorL.getCurrentPosition() > -30 && opModeIsActive()) { // 30 picked as an arbitrary value. Optimize this.
+            motorL.setPower(-0.25);
+            motorR.setPower(-0.25);
             telemetry.addData("Left Encoder Position:", motorL.getCurrentPosition());
             telemetry.addData("Right Encoder Position:", motorR.getCurrentPosition());
         }
