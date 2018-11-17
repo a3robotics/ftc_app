@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import static java.lang.Math.abs;
 
@@ -23,6 +24,7 @@ public class TankDriveBot extends OpMode {
 
     private CRServo servoArmElbow;
     private CRServo servoArmElbow2;
+    private Servo servoClaw;
 
     // encoder vals
     private int liftUpperLimit = 16000;
@@ -38,6 +40,7 @@ public class TankDriveBot extends OpMode {
         //servoArmBase = hardwareMap.servo.get("servoArmBase");
         servoArmElbow = hardwareMap.crservo.get("servoElbow");
         servoArmElbow2 = hardwareMap.crservo.get("servoElbow2");
+        servoClaw = hardwareMap.servo.get("servoArm"); // NOT a CR servo
 
         // left motor is backwards
         motorL.setDirection(DcMotor.Direction.REVERSE);
@@ -99,32 +102,13 @@ public class TankDriveBot extends OpMode {
         } else {
             servoArmElbow.setPower(0);
         }
+
         //second joint of the arm
         if(gamepad1.left_bumper) servoArmElbow2.setPower(.5);
         else if(gamepad1.left_trigger > 0) servoArmElbow2.setPower(-.5);
         else servoArmElbow2.setPower(0);
 
         getTelemetryData();
-
-        double motorLiftPos = abs(motorLift.getCurrentPosition());
-
-        if (gamepad1.x) {
-            while (motorLiftPos < 8000.0) {
-                motorLiftPos = abs(motorLift.getCurrentPosition());
-                telemetry.addData("Lift Encoder (loop):", motorLiftPos);
-                motorLift.setPower(-1);
-            }
-            motorLift.setPower(0);
-        }
-        if (gamepad1.x) {
-            if (motorLiftPos > 8000) {
-                while (motorLiftPos < 16000) {
-                    motorLiftPos = abs(motorLift.getCurrentPosition());
-                    motorLift.setPower(-1);
-                }
-            }
-            motorLift.setPower(0);
-        }
 
         if(gamepad1.back){
             killRobot();
@@ -133,7 +117,6 @@ public class TankDriveBot extends OpMode {
 
     public void stop() {
         killRobot();
-        //servoArmBase.setPosition(0.5);
     }
 
     private void getTelemetryData() {
