@@ -37,6 +37,7 @@ public class BotAuto extends LinearOpMode {
 
 
         lowerFromLift();
+        //drive(10, 0);
 
         killRobot();
 
