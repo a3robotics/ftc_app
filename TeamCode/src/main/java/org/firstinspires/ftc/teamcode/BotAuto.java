@@ -101,6 +101,7 @@ public class BotAuto extends LinearOpMode {
                     rotateRad = (encoderRadiansL+encoderRadiansR)/2 * rWheel / rbot;
                 }
             }
+
         } else if (rotateAmt == 0) {
             double rotateRad = distance / rWheel * 180 / 3.14159; //radians
             while (abs(encoderRadiansL) < rotateRad && abs(encoderRadiansR) < rotateRad) {
