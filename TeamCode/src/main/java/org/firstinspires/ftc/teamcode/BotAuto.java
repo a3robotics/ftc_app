@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import static java.lang.Math.abs;
+
 @Autonomous(name="BotAuto", group="BotAuto")
 public class BotAuto extends LinearOpMode {
 
@@ -43,14 +45,15 @@ public class BotAuto extends LinearOpMode {
     // Functions for autonomous
     private void lowerFromLift() {
         // extend lift
-        while(motorLift.getCurrentPosition() < liftUpperLimit && opModeIsActive()){
+        while (motorLift.getCurrentPosition() < liftUpperLimit && opModeIsActive()) {
             motorLift.setPower(0.25);
-            telemetry.addData("Lift Encoder:",motorLift.getCurrentPosition());
+            telemetry.addData("Lift Encoder:", motorLift.getCurrentPosition());
+
         }
         motorLift.setPower(0);
         sleep(1000);
         // Then, forward robot
-        while(motorL.getCurrentPosition()>-1000&&motorL.getCurrentPosition()>-1000 && opModeIsActive()){ // 1000 picked as an arbitrary value. Optimize this.
+        while (motorL.getCurrentPosition() > -1000 && motorL.getCurrentPosition() > -1000 && opModeIsActive()) { // 1000 picked as an arbitrary value. Optimize this.
             motorL.setPower(0.25);
             motorR.setPower(0.25);
             telemetry.addData("Left Encoder Position:", motorL.getCurrentPosition());
@@ -59,9 +62,9 @@ public class BotAuto extends LinearOpMode {
         motorLift.setPower(0);
         sleep(1000);
         // Then, retract lift arm
-        while(motorLift.getCurrentPosition() > liftLowerLimit && opModeIsActive()){
+        while (motorLift.getCurrentPosition() > liftLowerLimit && opModeIsActive()) {
             motorLift.setPower(-0.25);
-            telemetry.addData("Lift Encoder:",motorLift.getCurrentPosition());
+            telemetry.addData("Lift Encoder:", motorLift.getCurrentPosition());
         }
     }
 
@@ -74,35 +77,51 @@ public class BotAuto extends LinearOpMode {
 
     // prototype functions
 
-    private void drive(int distance, int rotate) {
-        double r = 2.36; //radius of wheels, in inches
-        double encoderRadiansL = motorL.getCurrentPosition()*3.14159/180;
-        double encoderRadiansR = motorR.getCurrentPosition()*3.14159/180;
+    private void drive(int distance, int rotateAmt) {
+        double rWheel = 2.36, rbot = 14; //radius of wheels, and the bot from it's rotational center to the front, in inches
+        double encoderRadiansL = motorL.getCurrentPosition() * 3.14159 / 180;
+        double encoderRadiansR = motorR.getCurrentPosition() * 3.14159 / 180;
         if (distance == 0) {
-            if(rotate == 0){
+            if (rotateAmt == 0) {
                 telemetry.addData("ERROR", "Both arguments of drive() are zero");
-            }else{
-                double rotateRad = rotate*3.14159/180;
-                while(encoderRadiansL < rotateRad && encoderRadiansR < rotateRad) {
-                    motorR.setPower(0.5);
-                    motorL.setPower(0.5);
-                    encoderRadiansL = motorL.getCurrentPosition()*3.14159/180;
-                    encoderRadiansR = motorR.getCurrentPosition()*3.14159/180;
+            } else {
+                double rotateRad = (encoderRadiansL+encoderRadiansR)/2 * rWheel / rbot;
+                double rotateAmtRad = rotateAmt * 3.14159 / 180;
+                while (rotateRad < rotateAmtRad && rotateRad < rotateAmtRad) {
+                    if(rotateAmt < 0) {
+                        motorR.setPower(0.5);
+                        motorL.setPower(-0.5);
+                    }
+                    else if(rotateAmt > 0) {
+                        motorR.setPower(-0.5);
+                        motorL.setPower(0.5);
+                    }
+                    encoderRadiansL = motorL.getCurrentPosition() * 3.14159 / 180;
+                    encoderRadiansR = motorR.getCurrentPosition() * 3.14159 / 180;
+                    rotateRad = (encoderRadiansL+encoderRadiansR)/2 * rWheel / rbot;
                 }
             }
-        }else if(rotate == 0){
-            double rotateRad = distance/r*180/3.14159; //radians
-            while(encoderRadiansL < rotateRad && encoderRadiansR < rotateRad) {
-                motorR.setPower(0.5);
-                motorL.setPower(0.5);
-                encoderRadiansL = motorL.getCurrentPosition()*3.14159/180;
-                encoderRadiansR = motorR.getCurrentPosition()*3.14159/180;
+        } else if (rotateAmt == 0) {
+            double rotateRad = distance / rWheel * 180 / 3.14159; //radians
+            while (abs(encoderRadiansL) < rotateRad && abs(encoderRadiansR) < rotateRad) {
+                if (distance < 0) {
+                    motorR.setPower(-0.5);
+                    motorL.setPower(-0.5);
+                } else if (distance > 0) {
+                    motorR.setPower(0.5);
+                    motorL.setPower(0.5);
+                }
+                encoderRadiansL = motorL.getCurrentPosition() * 3.14159 / 180;
+                encoderRadiansR = motorR.getCurrentPosition() * 3.14159 / 180;
             }
 
-        }else {
+        } else {
             // error!
             telemetry.addData("ERROR", "Arguments of drive() conflict");
 
         }
         //FOR RESETTING MOTORS: motorL.(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorL.setPower(0);
+        motorR.setPower(0);
     }
+}
