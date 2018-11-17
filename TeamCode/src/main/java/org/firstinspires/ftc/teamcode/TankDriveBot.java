@@ -12,13 +12,15 @@ import static java.lang.Math.abs;
 @TeleOp(name="TankDriveBot",group="TankDriveBot")
 public class TankDriveBot extends OpMode {
 
+    // used for helper classes
+    private Robot robot;
+
     //Variables
     private DcMotor motorL;
     private DcMotor motorR;
     private DcMotor motorLift;
     private DcMotor motorArmRotate;
 
-    //private Servo servoArmBase;
     private CRServo servoArmElbow;
     private CRServo servoArmElbow2;
 
@@ -52,7 +54,11 @@ public class TankDriveBot extends OpMode {
     }
 
     public void start() {
-        // Nothing else needs be done
+        // Reset all encoders
+        robot.resetEncoders(motorL);
+        robot.resetEncoders(motorR);
+        robot.resetEncoders(motorLift);
+        robot.resetEncoders(motorArmRotate);
     }
 
     public void loop() {

@@ -106,4 +106,3 @@ public class BotAuto extends LinearOpMode {
         }
         //FOR RESETTING MOTORS: motorL.(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
-}
