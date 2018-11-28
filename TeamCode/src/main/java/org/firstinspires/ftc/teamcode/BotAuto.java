@@ -2,77 +2,43 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Autonomous(name="BotAuto", group="BotAuto")
 public class BotAuto extends LinearOpMode {
 
-    private DcMotor motorL;
-    private DcMotor motorR;
-    private DcMotor motorLift;
-    //private Robot robot = new Robot();
-
+    private HardwareLiftBot robot = new HardwareLiftBot();
     private int liftUpperLimit = 14000;
     private int liftLowerLimit = 0;
 
     public void runOpMode() {
-
-        //robot.resetEncoders(motorL);
-        //robot.resetEncoders(motorR);
-        //robot.resetEncoders(motorLift);
-
-        motorL = hardwareMap.dcMotor.get("motorLeft");
-        motorR = hardwareMap.dcMotor.get("motorRight");
-        motorLift = hardwareMap.dcMotor.get("motorLift");
-
-        motorL.setPower(0);
-        motorR.setPower(0);
-        motorLift.setPower(0);
-        motorL.setDirection(DcMotor.Direction.REVERSE);
-        motorLift.setDirection(DcMotor.Direction.REVERSE);
-
+        robot.init(hardwareMap);
         waitForStart();
 
-
+        // Actually do stuff
         lowerFromLift();
-        //drive(10, 0);
 
-        killRobot();
-
+        robot.kill();
     }
 
     // Functions for autonomous
     private void lowerFromLift() {
         // extend lift
-        while (motorLift.getCurrentPosition() < liftUpperLimit && opModeIsActive()) {
-            motorLift.setPower(0.25);
-            telemetry.addData("Lift Encoder:", motorLift.getCurrentPosition());
-
+        while (robot.motorLift.getCurrentPosition() < liftUpperLimit && opModeIsActive()) {
+            robot.motorLift.setPower(0.25);
+            telemetry.addData("Lift Encoder:", robot.motorLift.getCurrentPosition());
         }
-        motorLift.setPower(0);
+        robot.motorLift.setPower(0);
         sleep(1000);
         // Then, forward robot
-        while (motorL.getCurrentPosition() > -30 && motorL.getCurrentPosition() > -30 && opModeIsActive()) { // 30 picked as an arbitrary value. Optimize this.
-            motorL.setPower(-0.25);
-
-            motorR.setPower(-0.25);
-            telemetry.addData("Left Encoder Position:", motorL.getCurrentPosition());
-            telemetry.addData("Right Encoder Position:", motorR.getCurrentPosition());
+        while (robot.motorL.getCurrentPosition() > -30 && robot.motorL.getCurrentPosition() > -30 && opModeIsActive()) { // 30 picked as an arbitrary value. Optimize this.
+            robot.motorL.setPower(-0.25);
+            robot.motorR.setPower(-0.25);
+            telemetry.addData("Left Encoder Position:", robot.motorL.getCurrentPosition());
+            telemetry.addData("Right Encoder Position:", robot.motorR.getCurrentPosition());
         }
-        motorLift.setPower(0);
+        robot.motorLift.setPower(0);
         sleep(1000);
-        // Then, retract lift arm
-//        while (motorLift.getCurrentPosition() > liftLowerLimit && opModeIsActive()) {
-//            motorLift.setPower(-0.25);
-//            telemetry.addData("Lift Encoder:", motorLift.getCurrentPosition());
-//        }
-    }
 
-    private void killRobot() {
-        // Stop all motors
-        motorL.setPower(0);
-        motorR.setPower(0);
-        motorLift.setPower(0);
     }
 
     // prototype functions
