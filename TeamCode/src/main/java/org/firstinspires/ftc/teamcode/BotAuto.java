@@ -4,24 +4,22 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import static java.lang.Math.abs;
-
 @Autonomous(name="BotAuto", group="BotAuto")
 public class BotAuto extends LinearOpMode {
 
     private DcMotor motorL;
     private DcMotor motorR;
     private DcMotor motorLift;
-    private Robot robot = new Robot();
+    //private Robot robot = new Robot();
 
-    private int liftUpperLimit = 16000;
+    private int liftUpperLimit = 14000;
     private int liftLowerLimit = 0;
 
     public void runOpMode() {
 
-        robot.resetEncoders(motorL);
-        robot.resetEncoders(motorR);
-        robot.resetEncoders(motorLift);
+        //robot.resetEncoders(motorL);
+        //robot.resetEncoders(motorR);
+        //robot.resetEncoders(motorLift);
 
         motorL = hardwareMap.dcMotor.get("motorLeft");
         motorR = hardwareMap.dcMotor.get("motorRight");
@@ -56,6 +54,7 @@ public class BotAuto extends LinearOpMode {
         // Then, forward robot
         while (motorL.getCurrentPosition() > -30 && motorL.getCurrentPosition() > -30 && opModeIsActive()) { // 30 picked as an arbitrary value. Optimize this.
             motorL.setPower(-0.25);
+
             motorR.setPower(-0.25);
             telemetry.addData("Left Encoder Position:", motorL.getCurrentPosition());
             telemetry.addData("Right Encoder Position:", motorR.getCurrentPosition());
@@ -63,10 +62,10 @@ public class BotAuto extends LinearOpMode {
         motorLift.setPower(0);
         sleep(1000);
         // Then, retract lift arm
-        while (motorLift.getCurrentPosition() > liftLowerLimit && opModeIsActive()) {
-            motorLift.setPower(-0.25);
-            telemetry.addData("Lift Encoder:", motorLift.getCurrentPosition());
-        }
+//        while (motorLift.getCurrentPosition() > liftLowerLimit && opModeIsActive()) {
+//            motorLift.setPower(-0.25);
+//            telemetry.addData("Lift Encoder:", motorLift.getCurrentPosition());
+//        }
     }
 
     private void killRobot() {
@@ -77,7 +76,7 @@ public class BotAuto extends LinearOpMode {
     }
 
     // prototype functions
-
+/*
     private void drive(int distance, int rotateAmt) {
         double rWheel = 2.36, rbot = 14; //radius of wheels, and the bot from it's rotational center to the front, in inches
         double encoderRadiansL = motorL.getCurrentPosition() * 3.14159 / 180;
@@ -86,9 +85,8 @@ public class BotAuto extends LinearOpMode {
             if (rotateAmt == 0) {
                 telemetry.addData("ERROR", "Both arguments of drive() are zero");
             } else {
-                double rotateRad = (encoderRadiansL+encoderRadiansR)/2 * rWheel / rbot;
                 double rotateAmtRad = rotateAmt * 3.14159 / 180;
-                while (rotateRad < rotateAmtRad && rotateRad < rotateAmtRad) {
+                while (rotateAmtRad < rotateAmtRad && rotateAmtRad < rotateAmtRad && opModeIsActive()) {
                     if(rotateAmt < 0) {
                         motorR.setPower(0.5);
                         motorL.setPower(-0.5);
@@ -99,13 +97,13 @@ public class BotAuto extends LinearOpMode {
                     }
                     encoderRadiansL = motorL.getCurrentPosition() * 3.14159 / 180;
                     encoderRadiansR = motorR.getCurrentPosition() * 3.14159 / 180;
-                    rotateRad = (encoderRadiansL+encoderRadiansR)/2 * rWheel / rbot;
+                    rotateAmtRad = (encoderRadiansL+encoderRadiansR)/2 * rWheel / rbot;
                 }
             }
 
         } else if (rotateAmt == 0) {
             double rotateRad = distance / rWheel * 180 / 3.14159; //radians
-            while (abs(encoderRadiansL) < rotateRad && abs(encoderRadiansR) < rotateRad) {
+            while (abs(encoderRadiansL) < rotateRad && abs(encoderRadiansR) < rotateRad  && opModeIsActive()) {
                 if (distance < 0) {
                     motorR.setPower(-0.5);
                     motorL.setPower(-0.5);
@@ -126,4 +124,5 @@ public class BotAuto extends LinearOpMode {
         motorL.setPower(0);
         motorR.setPower(0);
     }
+    */
 }

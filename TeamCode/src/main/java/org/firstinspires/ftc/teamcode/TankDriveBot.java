@@ -14,7 +14,7 @@ import static java.lang.Math.abs;
 public class TankDriveBot extends OpMode {
 
     // used for helper classes
-    private Robot robot;
+    // private Robot robot;
 
     //Variables
     private DcMotor motorL;
@@ -40,7 +40,7 @@ public class TankDriveBot extends OpMode {
         //servoArmBase = hardwareMap.servo.get("servoArmBase");
         servoArmElbow = hardwareMap.crservo.get("servoElbow");
         servoArmElbow2 = hardwareMap.crservo.get("servoElbow2");
-        servoClaw = hardwareMap.servo.get("servoArm"); // NOT a CR servo
+        servoClaw = hardwareMap.servo.get("servoClaw "); // NOT a CR servo
 
         // left motor is backwards
         motorL.setDirection(DcMotor.Direction.REVERSE);
@@ -58,10 +58,10 @@ public class TankDriveBot extends OpMode {
 
     public void start() {
         // Reset all encoders
-        robot.resetEncoders(motorL);
-        robot.resetEncoders(motorR);
-        robot.resetEncoders(motorLift);
-        robot.resetEncoders(motorArmRotate);
+//        robot.resetEncoders(motorL);
+//        robot.resetEncoders(motorR);
+//        robot.resetEncoders(motorLift);
+//        robot.resetEncoders(motorArmRotate);
     }
 
     public void loop() {
