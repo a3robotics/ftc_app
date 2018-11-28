@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Autonomous(name="BotAuto", group="BotAuto")
 public class BotAuto extends LinearOpMode {
@@ -41,9 +42,19 @@ public class BotAuto extends LinearOpMode {
 
     }
 
-    private void foreward(DcMotor mot) {
-
-        mot.getCurrentPosition();
+    private void forward(int inches) {
+        int amtL, amtR;
+        double rWheel = 2.36;
+        double degrees = 180*inches/rWheel;
+        robot.motorL.setPower(.5);
+        robot.motorR.setPower(.5);
+        while(true) {
+            amtL = robot.motorL.getCurrentPosition();
+            amtR = robot.motorR.getCurrentPosition();
+            if(amtL > degrees && amtR > degrees) break;
+        }
+        robot.motorL.setPower(0);
+        robot.motorR.setPower(0);
     }
 
     // prototype functions
