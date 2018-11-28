@@ -75,6 +75,11 @@ public class BotAuto extends LinearOpMode {
         motorLift.setPower(0);
     }
 
+    private void foreward(DcMotor mot) {
+
+        mot.getCurrentPosition();
+    }
+
     // prototype functions
 /*
     private void drive(int distance, int rotateAmt) {
