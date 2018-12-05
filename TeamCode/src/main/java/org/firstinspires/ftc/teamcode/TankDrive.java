@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name="TankDrive",group="TankDrive")
-public class TankDrive {
+public class TankDrive extends OpMode {
 
     // Runs when robot is turned on
     public void init() {
