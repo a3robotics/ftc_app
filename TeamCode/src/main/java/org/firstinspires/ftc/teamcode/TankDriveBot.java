@@ -26,9 +26,9 @@ public class TankDriveBot extends OpMode {
         robot. motorR.setPower(rightY * driveSpeedFactor);
 
         // Use right trigger and bumper to lift and lower lift
-        if (gamepad1.right_bumper && (robot.motorLift.getCurrentPosition() > liftUpperLimit || gamepad1.y)) {
+        if (gamepad1.right_bumper) {
             robot.motorLift.setPower(-0.5); // half speed per too much rpm
-        } else if (gamepad1.right_trigger > 0 && (robot.motorLift.getCurrentPosition() < liftLowerLimit || gamepad1.y)) { // being at all pressed
+        } else if (gamepad1.right_trigger > 0) { // being at all pressed
             robot.motorLift.setPower(0.5);
         } else {
             robot.motorLift.setPower(0);
