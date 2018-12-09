@@ -1,5 +1,18 @@
 package org.firstinspires.ftc.teamcode;
 
+/**
+ * TODO:
+ * After lower:
+ * Near/far targets
+ * possible targets: marker zone and crater
+ *
+ * combinations:
+ * move to near crater
+ * move to far crater
+ * move to near marker
+ * move to far marker
+ */
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
