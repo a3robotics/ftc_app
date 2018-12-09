@@ -34,6 +34,15 @@ public class TankDriveBot extends OpMode {
             robot.motorLift.setPower(0);
         }
 
+        if (gamepad1.b){
+            robot.intake.setPower(1);
+        }else if (gamepad1.x){
+            robot.intake.setPower(-1);
+        } else {
+            robot.intake.setPower(0);
+        }
+
+
         getTelemetryData();
         if(gamepad1.back){
             robot.kill();
