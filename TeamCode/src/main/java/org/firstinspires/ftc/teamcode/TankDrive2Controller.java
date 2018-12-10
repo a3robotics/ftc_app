@@ -2,10 +2,12 @@ package org.firstinspires.ftc.teamcode;
 
 //imports
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name="TankDrive2Controller",group="TankDrive2Controller")
+@Disabled
 public class TankDrive2Controller extends OpMode {
 
     private HardwareLiftBot robot = new HardwareLiftBot();

@@ -14,12 +14,13 @@ package org.firstinspires.ftc.teamcode;
  */
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import java.lang.Math;
 
 @Autonomous(name="BotAuto", group="BotAuto")
+@Disabled
 public class BotAuto extends LinearOpMode {
 
     private HardwareLiftBot robot = new HardwareLiftBot();
@@ -43,6 +44,7 @@ public class BotAuto extends LinearOpMode {
             drive(-12, .25);
             rotate(180);
             drive(12, 1);
+            robot.kill();
             killMotors();
         }
 
@@ -163,7 +165,6 @@ public class BotAuto extends LinearOpMode {
     }
     private void killMotors() {
         runtime.reset();
-        robot.motorL.setPower(0);
-        robot.motorR.setPower(0);
+        robot.kill();
     }
 }
