@@ -32,9 +32,19 @@ public class BotAuto extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
         runtime.reset();
+        boolean baileyCode = false;
 
         // Actually do stuff
-        lowerLiftAndDriveIntoCrater(); //That's a mighty big function. Might want to shorten it later.
+        if(baileyCode == false) lowerLiftAndDriveIntoCrater(); //That's a mighty big function. I think I want to shorten it.
+
+        if(baileyCode == true) { //owo, what dis?
+            //If you make the code to work as thus, it is a lot less confusing, and it also allows for easier updating. Of course, the numbers here are only temporary, but it does a similar thing to lowerLiftAndDriveIntoCrater()
+            lowerLift();
+            drive(-12, .25);
+            rotate(180);
+            drive(12, 1);
+            killMotors();
+        }
 
         robot.kill();
     }
@@ -92,20 +102,36 @@ public class BotAuto extends LinearOpMode {
         runtime.reset(); // redundancy for safety
     }
 
+    private void lowerLift() {
+        // For the first 8 seconds lower lift
+        while (runtime.time() < 8 && opModeIsActive()) {
+            // 15 seconds
+            robot.motorLift.setPower(-0.25);
+            telemetry.addData("Lift Encoder:", robot.motorLift.getCurrentPosition());
+        }
+        robot.motorLift.setPower(0); // stop lift motor
+    }
+
     private void drive(double inches, double speed) { //updated forward for it to use the actual amount of ticks that our motors have per rotation (which is 356.3). Also, I added a speed parameter. --Bailey
         long amtL, amtR;
-        double rWheel = 2.36;
-        double ticks = 75.5 * inches; /*75.5 is the amount of ticks that the encoder goes through for every inch the robot travels, and if you multiply this ratio by the amount of inches
+        double rWheel = 2.36, cWheel = 14.83; //needed info: radius and circumference of wheel. No function really.
+        double ticks = 24.03 * inches; /*24.03 is the amount of ticks that the encoder goes through for every inch the robot travels, and if you multiply this ratio by the amount of inches
                                       you want to travel, then you get the amount of distance you want the bot to go.*/
         robot.motorL.setPower(speed);
         robot.motorR.setPower(speed);
         while(opModeIsActive()) { //This SHOULD work, but it may not. Needs testing.
             amtL = robot.motorL.getCurrentPosition();
             amtR = robot.motorR.getCurrentPosition();
+            telemetry.addData("Left Encoder Position:", robot.motorL.getCurrentPosition());
+            telemetry.addData("Right Encoder Position:", robot.motorR.getCurrentPosition());
             if(inches > 0) {
+                robot.motorL.setPower(-speed);
+                robot.motorR.setPower(-speed);
                 if (amtL > ticks && amtR > ticks) break;
             }
             else if(inches < 0) {
+                robot.motorL.setPower(speed);
+                robot.motorR.setPower(speed);
                 if (amtL < ticks && amtR < ticks) break;
             }
             else break;
@@ -133,5 +159,11 @@ public class BotAuto extends LinearOpMode {
                 telemetry.addData("ERROR: ", "Parameter degrees equals zero in rotate()");
             }
         }
+        runtime.reset();
+    }
+    private void killMotors() {
+        runtime.reset();
+        robot.motorL.setPower(0);
+        robot.motorR.setPower(0);
     }
 }
