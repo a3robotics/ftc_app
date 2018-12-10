@@ -9,8 +9,7 @@ public class Auto_AllPossiblePoints extends LinearOpMode {
     private HardwareLiftBot robot = new HardwareLiftBot();
     private ElapsedTime runtime = new ElapsedTime();
     public void runOpMode() {
-        /* purple arrow:
-         * lower,
+        /* lower,
          * rotate 180,
          * drive 1 foot,
          * rotate 180,
