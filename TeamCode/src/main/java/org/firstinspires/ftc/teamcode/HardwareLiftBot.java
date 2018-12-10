@@ -27,8 +27,9 @@ public class HardwareLiftBot {
         motorL = hwMap.dcMotor.get("motorLeft");
         motorR = hwMap.dcMotor.get("motorRight");
         motorLift = hwMap.dcMotor.get("motorLift");
+        motorLift.setDirection(DcMotor.Direction.REVERSE);
         // left motor is backwards
-        motorL.setDirection(DcMotor.Direction.REVERSE);
+        motorR.setDirection(DcMotor.Direction.REVERSE);
 
         intake = hwMap.crservo.get("intake");
 
