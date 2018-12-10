@@ -14,9 +14,14 @@ public class Auto_DriveToNearDepot extends LinearOpMode {
         runtime.reset();
 
         robot.lowerFromLift();
-        /*
-        Test later and add code
-         */
+        robot.rotate(180);
+        robot.drive(-12, .25);
+        robot.rotate(180);
+        robot.drive(12, 1);
+        // about 15 seconds in mas o menos
+
+        // TODO: Run team marker servo
+
         robot.kill();
     }
 }
