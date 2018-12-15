@@ -131,7 +131,6 @@ public class BotAuto extends LinearOpMode {
         if (inches > 0) {
             robot.motorL.setPower(-speed);
             robot.motorR.setPower(-speed);
-            ticks = -ticks;
         } else if (inches < 0) {
             robot.motorL.setPower(speed);
             robot.motorR.setPower(speed);
@@ -142,7 +141,7 @@ public class BotAuto extends LinearOpMode {
             telemetry.addData("Left Encoder Position:", robot.motorL.getCurrentPosition());
             telemetry.addData("Right Encoder Position:", robot.motorR.getCurrentPosition());
             if (inches > 0) {
-                if (amtL < iTicks && amtR < iTicks)
+                if (amtL < -iTicks && amtR < -iTicks)
                     break;//Encoder Values are negative when the bot goes forward
             } else if (inches < 0) {
                 if (amtL > iTicks && amtR > iTicks) break;
@@ -151,7 +150,6 @@ public class BotAuto extends LinearOpMode {
         robot.motorL.setPower(0);
         robot.motorR.setPower(0);
     }
-
     private void rotate(int degrees) { //rotates the bot. This works based off of
         double time = 0.01 * abs(degrees), speed = 0.6; //SPEED MUST BE KEPT AT 0.6 FOR THIS FUNCTION TO WORK!!!!
         //0.01 is a ratio which is defined by how the bot turns 180 degrees for each 1.8 seconds while motor speeds are 0.6 (plus or minus)
