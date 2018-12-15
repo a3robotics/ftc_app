@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import static java.lang.Math.round;
+
 public class HardwareLiftBot {
 
     public DcMotor motorL = null;
@@ -47,27 +49,32 @@ public class HardwareLiftBot {
         intake.setPower(0);
     }
 
-    public void drive(double inches, double speed) { //updated forward for it to use the actual amount of ticks that our motors have per rotation (which is 356.3). Also, I added a speed parameter. --Bailey
+    private void drive(double inches, double speed) { //updated forward for it to use the actual amount of ticks that our motors have per rotation (which is 356.3). Also, I added a speed parameter. --Bailey
         long amtL, amtR;
         double rWheel = 2.36, cWheel = 14.83; //needed info: radius and circumference of wheel. No function really.
-        double ticks = 24.03 * inches; /*24.03 is the amount of ticks that the encoder goes through for every inch the robot travels, and if you multiply this ratio by the amount of inches
-                                      you want to travel, then you get the amount of distance you want the bot to go.*/
-        motorL.setPower(speed);
-        motorR.setPower(speed);
-        while(true) { //This SHOULD work, but it may not. Needs testing.
+        double ticks = 24.03 * inches; /*24.03 is the amount of ticks that the encoder goes through for every inch the robot travels, and if you multiply
+                                      this ratio by the amount of inches you want to travel, throbot.motorL.setMode(DcMotor.RunMode.RESET_ENCODERS);
+                                      robot.motorR.setMode(DcMotor.RunMode.RESET_ENCODERS);en you get the amount of distance you want the bot to go.*/
+        long iTicks = round(ticks);
+
+        motorL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        if (inches > 0) {
+            motorL.setPower(-speed);
+            motorR.setPower(-speed);
+        } else if (inches < 0) {
+            motorL.setPower(speed);
+            motorR.setPower(speed);
+        }
+        while (true) { //This SHOULD work, but it may not. Needs testing.
             amtL = motorL.getCurrentPosition();
             amtR = motorR.getCurrentPosition();
-            if(inches > 0) {
-                motorL.setPower(speed);
-                motorR.setPower(speed);
-                if (amtL > ticks && amtR > ticks) break;
-            }
-            else if(inches < 0) {
-                motorL.setPower(-speed);
-                motorR.setPower(-speed);
-                if (amtL < ticks && amtR < ticks) break;
-            }
-            else break;
+            if (inches > 0) {
+                if (amtL < -iTicks && amtR < -iTicks)
+                    break;//Encoder Values are negative when the bot goes forward
+            } else if (inches < 0) {
+                if (amtL > iTicks && amtR > iTicks) break;
+            } else break;
         }
         motorL.setPower(0);
         motorR.setPower(0);
