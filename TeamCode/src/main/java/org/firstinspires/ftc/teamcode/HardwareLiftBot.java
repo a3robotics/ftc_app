@@ -49,7 +49,7 @@ public class HardwareLiftBot {
         intake.setPower(0);
     }
 
-    private void drive(double inches, double speed) { //updated forward for it to use the actual amount of ticks that our motors have per rotation (which is 356.3). Also, I added a speed parameter. --Bailey
+    public void drive(double inches, double speed) { //updated forward for it to use the actual amount of ticks that our motors have per rotation (which is 356.3). Also, I added a speed parameter. --Bailey
         long amtL, amtR;
         double rWheel = 2.36, cWheel = 14.83; //needed info: radius and circumference of wheel. No function really.
         double ticks = 24.03 * inches; /*24.03 is the amount of ticks that the encoder goes through for every inch the robot travels, and if you multiply
