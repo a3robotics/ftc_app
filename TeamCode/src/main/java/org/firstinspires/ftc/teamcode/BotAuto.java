@@ -19,6 +19,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import java.lang.Math;
 
+import static java.lang.Math.abs;
+
 @Autonomous(name="BotAuto", group="BotAuto")
 public class BotAuto extends LinearOpMode {
 
@@ -40,10 +42,10 @@ public class BotAuto extends LinearOpMode {
         if(baileyCode == true) { //owo, what dis?
             //If you make the code to work as thus, it is a lot less confusing, and it also allows for easier updating. Of course, the numbers here are only temporary,
             // but it does a similar thing to lowerLiftAndDriveIntoCrater()
-            lowerLift();
-            drive(-12, .25);
-            rotate(180);
-            drive(12, 1);
+            //lowerLift();
+            //drive(-12, .25);
+            rotate(90); //negative values go right, and positive values go left
+            drive(-12, 1);
             killMotors();
         }
 
@@ -54,31 +56,31 @@ public class BotAuto extends LinearOpMode {
     private void lowerLiftAndDriveIntoCrater() { // its java I'm allowed to be verbose like this
 
         // For the first 8 seconds lower lift
-        while (runtime.time() < 8 && opModeIsActive()) {
+        while (runtime.time() < 14 && opModeIsActive()) {
             // 15 seconds
-            robot.motorLift.setPower(-0.25);
+            robot.motorLift.setPower(0.25);
             telemetry.addData("Lift Encoder:", robot.motorLift.getCurrentPosition());
         }
         robot.motorLift.setPower(0); // stop lift motor
 
         //rotate robot 180 degrees
-        turn180();
+        rotate(90);
         runtime.reset();
 
         // then drive backwards
         while (runtime.time() < 2 && opModeIsActive()) {
-            robot.motorL.setPower(0.25);
-            robot.motorR.setPower(0.25);
+            robot.motorL.setPower(-0.25);
+            robot.motorR.setPower(-0.25);
             telemetry.addData("Left Encoder Position:", robot.motorL.getCurrentPosition());
             telemetry.addData("Right Encoder Position:", robot.motorR.getCurrentPosition());
         }
 
         //rotate robot 180 degrees
-        turn180();
+        //rotate(180);
         runtime.reset();
 
         // then yeet yourself into the crater (go faster)
-        while (runtime.time() < 0.75 && opModeIsActive()) {
+        while (runtime.time() < 2 && opModeIsActive()) {
             robot.motorL.setPower(-1);
             robot.motorR.setPower(-1);
             telemetry.addData("Left Encoder Position:", robot.motorL.getCurrentPosition());
@@ -105,9 +107,9 @@ public class BotAuto extends LinearOpMode {
 
     private void lowerLift() {
         // For the first 8 seconds lower lift
-        while (runtime.time() < 8 && opModeIsActive()) {
+        while (runtime.time() < 10 && opModeIsActive()) {
             // 15 seconds
-            robot.motorLift.setPower(-0.25);
+            robot.motorLift.setPower(0.25);
             telemetry.addData("Lift Encoder:", robot.motorLift.getCurrentPosition());
         }
         robot.motorLift.setPower(0); // stop lift motor
@@ -122,31 +124,34 @@ public class BotAuto extends LinearOpMode {
 
         robot.motorL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.motorL.setPower(speed);
-        robot.motorR.setPower(speed);
-        while(opModeIsActive()) { //This SHOULD work, but it may not. Needs testing.
-            amtL = robot.motorL.getCurrentPosition();
-            amtR = robot.motorR.getCurrentPosition();
-            telemetry.addData("Left Encoder Position:", robot.motorL.getCurrentPosition());
-            telemetry.addData("Right Encoder Position:", robot.motorR.getCurrentPosition());
-            if(inches > 0) {
-                robot.motorL.setPower(-speed);
-                robot.motorR.setPower(-speed);
-                if (amtL > ticks && amtR > ticks) break;
+//        robot.motorL.setPower(speed);
+//        robot.motorR.setPower(speed);
+        if (inches > 0) {
+            robot.motorL.setPower(-speed);
+            robot.motorR.setPower(-speed);
+            ticks = -ticks;
+        } else if (inches < 0) {
+            robot.motorL.setPower(speed);
+            robot.motorR.setPower(speed);
+            while (opModeIsActive()) { //This SHOULD work, but it may not. Needs testing.
+                amtL = robot.motorL.getCurrentPosition();
+                amtR = robot.motorR.getCurrentPosition();
+                telemetry.addData("Left Encoder Position:", robot.motorL.getCurrentPosition());
+                telemetry.addData("Right Encoder Position:", robot.motorR.getCurrentPosition());
+                if (inches > 0) {
+                    if (amtL < ticks && amtR < ticks)
+                        break;//Encoder Values are negative when the bot goes forward
+                } else if (inches < 0) {
+                    if (amtL > ticks && amtR > ticks) break;
+                } else break;
             }
-            else if(inches < 0) {
-                robot.motorL.setPower(speed);
-                robot.motorR.setPower(speed);
-                if (amtL < ticks && amtR < ticks) break;
-            }
-            else break;
+            robot.motorL.setPower(0);
+            robot.motorR.setPower(0);
         }
-        robot.motorL.setPower(0);
-        robot.motorR.setPower(0);
     }
 
     private void rotate(int degrees) { //rotates the bot. This works based off of
-        double time = 0.01 * degrees, speed = 0.6; //SPEED MUST BE KEPT AT 0.6 FOR THIS FUNCTION TO WORK!!!!
+        double time = 0.01 * abs(degrees), speed = 0.6; //SPEED MUST BE KEPT AT 0.6 FOR THIS FUNCTION TO WORK!!!!
         //0.01 is a ratio which is defined by how the bot turns 180 degrees for each 1.8 seconds while motor speeds are 0.6 (plus or minus)
         runtime.reset(); // redundancy for safety
 
@@ -156,11 +161,12 @@ public class BotAuto extends LinearOpMode {
                 robot.motorL.setPower(-speed);
                 robot.motorR.setPower(speed);
 
-            } else if (degrees > 0) {
+            }
+            if (degrees > 0) {
                 robot.motorL.setPower(speed);
                 robot.motorR.setPower(-speed);
 
-            } else {
+            } if(degrees == 0) {
                 telemetry.addData("ERROR: ", "Parameter \"degrees\" equals zero in rotate()");
             }
         }
