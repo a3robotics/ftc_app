@@ -38,14 +38,14 @@ public class BotAutoAwayFromCrater extends LinearOpMode {
 
         // Actually do stuff
         if(nonTimeCode == false) {
+
             lowerLift();
             rotate(90);
             driveByTime(2, -.5);
             rotate(-90);
             driveByTime(4, 1);
-        }
+        }else{
 
-        if(nonTimeCode == true) { //owo, what dis?
             //If you make the code to work as thus, it is a lot less confusing, and it also allows for easier updating. Of course, the numbers here are only temporary,
             // but it does a similar thing to lowerLiftAndDriveIntoCrater()
             lowerLift();
