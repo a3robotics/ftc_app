@@ -76,7 +76,6 @@ public class BotAuto extends LinearOpMode {
             telemetry.addData("Right Encoder Position:", robot.motorR.getCurrentPosition());
         }
 
-
         //rotate robot 180 degrees
         rotate(45);
         runtime.reset();
