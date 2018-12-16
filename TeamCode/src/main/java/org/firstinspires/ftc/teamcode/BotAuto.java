@@ -57,19 +57,19 @@ public class BotAuto extends LinearOpMode {
     private void lowerLiftAndDriveIntoCrater() { // its java I'm allowed to be verbose like this
 
         // For the first 8 seconds lower lift
-        while (runtime.time() < 14 && opModeIsActive()) {
+        while (runtime.time() < 11 && opModeIsActive()) {
             // 15 seconds
-            robot.motorLift.setPower(0.25);
+            robot.motorLift.setPower(0.5);
             telemetry.addData("Lift Encoder:", robot.motorLift.getCurrentPosition());
         }
         robot.motorLift.setPower(0); // stop lift motor
 
         //rotate robot 180 degrees
-        rotate(90);
+        rotate(60);
         runtime.reset();
 
         // then drive backwards
-        while (runtime.time() < 2 && opModeIsActive()) {
+        while (runtime.time() < 1.5 && opModeIsActive()) {
             robot.motorL.setPower(-0.25);
             robot.motorR.setPower(-0.25);
             telemetry.addData("Left Encoder Position:", robot.motorL.getCurrentPosition());
@@ -77,7 +77,7 @@ public class BotAuto extends LinearOpMode {
         }
 
         //rotate robot 180 degrees
-        //rotate(180);
+        rotate(45);
         runtime.reset();
 
         // then yeet yourself into the crater (go faster)
@@ -107,8 +107,8 @@ public class BotAuto extends LinearOpMode {
     }
 
     private void lowerLift() {
-        // For the first 8 seconds lower lift
-        while (runtime.time() < 10 && opModeIsActive()) {
+        // For the first 14 seconds lower lift
+        while (runtime.time() < 16 && opModeIsActive()) {
             // 15 seconds
             robot.motorLift.setPower(0.25);
             telemetry.addData("Lift Encoder:", robot.motorLift.getCurrentPosition());

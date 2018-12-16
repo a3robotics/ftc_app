@@ -21,7 +21,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import static java.lang.Math.abs;
 import static java.lang.Math.round;
 
-@Autonomous(name="BotAuto", group="BotAuto")
+@Autonomous(name="BotAutoAwayFromCrater", group="BotAutoAwayFromCrater")
 public class BotAutoAwayFromCrater extends LinearOpMode {
 
     private HardwareLiftBot robot = new HardwareLiftBot();
@@ -38,20 +38,21 @@ public class BotAutoAwayFromCrater extends LinearOpMode {
 
         // Actually do stuff
         if(nonTimeCode == false) {
-
             lowerLift();
-            rotate(90);
+            driveByTime(1.5, -.25);
+            rotate(60);
             driveByTime(2, -.5);
-            rotate(-90);
-            driveByTime(4, 1);
-        }else{
+            rotate(90);
+            driveByTime(2, -1);
+        }
 
+        if(nonTimeCode == true) { //owo, what dis?
             //If you make the code to work as thus, it is a lot less confusing, and it also allows for easier updating. Of course, the numbers here are only temporary,
             // but it does a similar thing to lowerLiftAndDriveIntoCrater()
             lowerLift();
             rotate(90); //negative values go right, and positive values go left
             drive(-12, .25);
-            rotate(-90);
+            rotate(-45);
             drive(36, 1);
             killMotors();
         }
@@ -63,7 +64,7 @@ public class BotAutoAwayFromCrater extends LinearOpMode {
     private void lowerLiftAndDriveIntoCrater() { // its java I'm allowed to be verbose like this
 
         // For the first 8 seconds lower lift
-        while (runtime.time() < 14 && opModeIsActive()) {
+        while (runtime.time() < 16 && opModeIsActive()) {
             // 15 seconds
             robot.motorLift.setPower(0.25);
             telemetry.addData("Lift Encoder:", robot.motorLift.getCurrentPosition());
@@ -114,9 +115,9 @@ public class BotAutoAwayFromCrater extends LinearOpMode {
 
     private void lowerLift() {
         // For the first 8 seconds lower lift
-        while (runtime.time() < 10 && opModeIsActive()) {
+        while (runtime.time() < 11 && opModeIsActive()) {
             // 15 seconds
-            robot.motorLift.setPower(0.25);
+            robot.motorLift.setPower(0.5);
             telemetry.addData("Lift Encoder:", robot.motorLift.getCurrentPosition());
         }
         robot.motorLift.setPower(0); // stop lift motor
