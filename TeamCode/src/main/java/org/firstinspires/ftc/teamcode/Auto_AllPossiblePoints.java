@@ -34,7 +34,14 @@ public class Auto_AllPossiblePoints extends LinearOpMode {
         rotate(180);
 
         drive(24, 0.5);
-        // run intake for a second
+
+        // run intake for a second or two
+        runtime.reset();
+        while(runtime.time() < 2) {
+            robot.intake.setPower(-1);
+        }
+        robot.intake.setPower(0);
+
         drive(-12, .25);
 
         rotate(120);
