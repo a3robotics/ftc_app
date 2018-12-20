@@ -64,8 +64,8 @@ public class BotAuto extends LinearOpMode {
         }
         robot.motorLift.setPower(0); // stop lift motor
 
-        //rotate robot 180 degrees
-        rotate(60);
+        //rotate robot 90 degrees
+        rotate(90);
         runtime.reset();
 
         // then drive backwards
@@ -77,7 +77,7 @@ public class BotAuto extends LinearOpMode {
         }
 
         //rotate robot 180 degrees
-        rotate(45);
+        //rotate(45);
         runtime.reset();
 
         // then yeet yourself into the crater (go faster)
