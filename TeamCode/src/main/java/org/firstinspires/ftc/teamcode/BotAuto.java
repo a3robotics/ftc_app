@@ -13,6 +13,7 @@ package org.firstinspires.ftc.teamcode;
  * move to far marker
  */
 
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -25,7 +26,9 @@ import static java.lang.Math.round;
 @Autonomous(name="BotAuto", group="BotAuto")
 public class BotAuto extends LinearOpMode {
 
+
     private HardwareLiftBot robot = new HardwareLiftBot();
+    ModernRoboticsI2cGyro   gyro    = null;                    // Additional Gyro device
     private int liftUpperLimit = 14000;
     private int liftLowerLimit = 0;
 
@@ -36,6 +39,17 @@ public class BotAuto extends LinearOpMode {
         waitForStart();
         runtime.reset();
         boolean baileyCode = false;
+        gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
+
+        // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
+        robot.motorL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        // Send telemetry message to alert driver that we are calibrating;
+        telemetry.addData(">", "Calibrating Gyro");    //
+        telemetry.update();
+
+        gyro.calibrate();
 
         // Actually do stuff
         if(baileyCode == false) lowerLiftAndDriveIntoCrater(); //That's a mighty big function. I think I want to shorten it.
