@@ -4,21 +4,20 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="Auto_DriveToNearCrater", group="Auto_DriveToNearCrater")
-public class Auto_DriveToNearCrater extends LinearOpMode {
+import org.firstinspires.ftc.teamcode.HardwareLiftBot;
+
+@Autonomous(name="Auto_LiftUp", group="Auto_LiftUp")
+// @Disabled
+public class Auto_LiftUp extends LinearOpMode {
     private HardwareLiftBot robot = new HardwareLiftBot();
     private ElapsedTime runtime = new ElapsedTime();
     public void runOpMode() {
         robot.init(hardwareMap);
         waitForStart();
         runtime.reset();
-
-        robot.lowerFromLift();
-        robot.rotate(180);
-        robot.drive(-12, .25);
-        robot.rotate(180);
-        robot.drive(12, 1);
-        // about 15 seconds in mas o menos
+        while(opModeIsActive() && runtime.time() < 10) { // 10 seconds??
+            robot.motorLift.setPower(-0.5);
+        }
         robot.kill();
     }
 }
