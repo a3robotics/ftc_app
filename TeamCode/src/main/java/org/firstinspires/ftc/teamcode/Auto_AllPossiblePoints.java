@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import static java.lang.Math.abs;
 
 @Autonomous(name="Auto_AllPossiblePoints", group="Auto_AllPossiblePoints")
 public class Auto_AllPossiblePoints extends LinearOpMode {
@@ -16,7 +14,7 @@ public class Auto_AllPossiblePoints extends LinearOpMode {
     public void runOpMode() {
 
 //        tensorflow.initTensorflow(hardwareMap);
-        robot = new HardwareLiftBot(this);
+        //robot = new HardwareLiftBot(this);
         robot.init(hardwareMap);
 
         telemetry.addData(">", "Robot Ready.");

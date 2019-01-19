@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 //imports
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -37,13 +36,13 @@ public class TankDriveBot extends OpMode {
             robot.motorLift.setPower(0);
         }
 
-        if (gamepad1.b){
+        /*if (gamepad1.b){
             robot.intake.setPower(1);
         }else if (gamepad1.x){
             robot.intake.setPower(-1);
         } else {
             robot.intake.setPower(0);
-        }
+        }*/
 
 
         getTelemetryData();
