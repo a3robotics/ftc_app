@@ -89,21 +89,21 @@ public class Auto_AllPossiblePoints extends LinearOpMode {
 //    }
 //
 //    private void driveByTime(double inches, double speed) {
-//        if(abs(speed)!=speed) {
-//            speed = abs(speed);
-//            inches *= -1;
-//        }
-//        runtime.reset();
-//        // time = constant * ( rate / distance )
-//        double k = 0.015625; //just some constant
-//        double time = k * (abs(inches)/speed);
-//        if(inches < 0) speed = -speed;
-//        while(runtime.time() < time && opModeIsActive()) {
-//            robot.motorR.setPower(speed);
-//            robot.motorL.setPower(speed);
-//        }
-//        robot.kill();
-//    }
+////        if(abs(speed)!=speed) {
+////            speed = abs(speed);
+////            inches *= -1;
+////        }
+////        runtime.reset();
+////        // time = constant * ( rate / distance )
+////        double k = 0.015625; //just some constant
+////        double time = k * (abs(inches)/speed);
+////        if(inches < 0) speed = -speed;
+////        while(runtime.time() < time && opModeIsActive()) {
+////            robot.motorR.setPower(speed);
+////            robot.motorL.setPower(speed);
+////        }
+////        robot.kill();
+////    }
 //
 //
 //    private void rotate(int degrees) {

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -7,6 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -39,6 +43,12 @@ public class BotAutoTENSOR extends LinearOpMode {
 
     private HardwareLiftBot robot = new HardwareLiftBot();
     ModernRoboticsI2cGyro gyro    = null;                    // Additional Gyro device
+    // The IMU sensor object
+    BNO055IMU imu;
+
+    // State used for updating telemetry
+    Orientation angles;
+    Acceleration gravity;
     private int liftUpperLimit = 14000;
     private int liftLowerLimit = 0;
  int goldpos = -2;
@@ -56,6 +66,9 @@ public class BotAutoTENSOR extends LinearOpMode {
         }
 
         /** Wait for the game to begin */
+
+        // The IMU sensor object
+        BNO055IMU imu;
         telemetry.addData(">", "Press Play to start tracking");
         telemetry.update();
         /***
@@ -67,6 +80,8 @@ public class BotAutoTENSOR extends LinearOpMode {
             tfod.activate();
         }
         runtime.reset();
+        lowerLift();
+        rotate(90);
         // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
         robot.motorL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -121,7 +136,6 @@ public class BotAutoTENSOR extends LinearOpMode {
             /**
              * PLACE CODE
              */
-
         }
         else{ //Right PROGRAM
 /**
@@ -225,40 +239,53 @@ public class BotAutoTENSOR extends LinearOpMode {
         robot.motorLift.setPower(0); // stop lift motor
     }
 
-    private void drive(double inches, double speed) { //updated forward for it to use the actual amount of ticks that our motors have per rotation (which is 356.3). Also, I added a speed parameter. --Bailey
-        long amtL, amtR;
-        double rWheel = 2.36, cWheel = 14.83; //needed info: radius and circumference of wheel. No function really.
-        double ticks = 24.03 * inches; /*24.03 is the amount of ticks that the encoder goes through for every inch the robot travels, and if you multiply
-                                      this ratio by the amount of inches you want to travel, throbot.motorL.setMode(DcMotor.RunMode.RESET_ENCODERS);
-                                      robot.motorR.setMode(DcMotor.RunMode.RESET_ENCODERS);en you get the amount of distance you want the bot to go.*/
-        long iTicks = round(ticks);
-
-        robot.motorL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.motorR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        robot.motorL.setPower(speed);
-//        robot.motorR.setPower(speed);
-        if (inches > 0) {
-            robot.motorL.setPower(-speed);
-            robot.motorR.setPower(-speed);
-        } else if (inches < 0) {
-            robot.motorL.setPower(speed);
+        private void driveByTime(double inches, double speed) {
+        if(abs(speed)!=speed) {
+            speed = abs(speed);
+            inches *= -1;
+        }
+        runtime.reset();
+        // time = constant * ( rate / distance )
+        double k = 0.015625; //just some constant
+        double time = k * (abs(inches)/speed);
+        if(inches < 0) speed = -speed;
+        while(runtime.time() < time && opModeIsActive()) {
             robot.motorR.setPower(speed);
+            robot.motorL.setPower(speed);
         }
-        while (opModeIsActive()) { //This SHOULD work, but it may not. Needs testing.
-            amtL = robot.motorL.getCurrentPosition();
-            amtR = robot.motorR.getCurrentPosition();
-            telemetry.addData("Left Encoder Position:", robot.motorL.getCurrentPosition());
-            telemetry.addData("Right Encoder Position:", robot.motorR.getCurrentPosition());
-            if (inches > 0) {
-                if (amtL < -iTicks && amtR < -iTicks)
-                    break;//Encoder Values are negative when the bot goes forward
-            } else if (inches < 0) {
-                if (amtL > iTicks && amtR > iTicks) break;
-            } else break;
-        }
-        robot.motorL.setPower(0);
-        robot.motorR.setPower(0);
+        robot.kill();
     }
+
+    private void rotateByGyro(double degrees, double speed) { //NEEDS TESTING. This only works in the range of -179 < degrees < 179.
+        //needed variables:
+        // 1. Gyro reading. This would be best if it starts at a value of 180, since the reading is cartesian, and therefore is a number between 0-359, and resets back to zero if it gets above 359.
+        double heading = gyro.getIntegratedZValue();
+        gyro.resetZAxisIntegrator();
+        if(degrees <= -179 || degrees >= 179) {
+            telemetry.addData("DEGREES PAST AVAILABLE RANGE IN rotateByGyro(): ", degrees);
+            telemetry.update();
+            return;
+        }
+        if(degrees ==0) return;
+
+        if(degrees < 0) {
+            while(gyro.getIntegratedZValue() > degrees && opModeIsActive()) {
+                robot.motorL.setPower(speed);
+                robot.motorR.setPower(-speed);
+                telemetry.addData("Heading: ", gyro.getIntegratedZValue());
+                telemetry.addData("Degrees: ", degrees);
+                telemetry.update();
+            }
+        }  else while(gyro.getIntegratedZValue() < degrees && opModeIsActive()) {
+            robot.motorL.setPower(-speed);
+            robot.motorR.setPower(speed);
+            telemetry.addData("Heading: ", gyro.getIntegratedZValue());
+            telemetry.addData("Degrees: ", degrees);
+            telemetry.update();
+        }
+        robot.kill();
+    }
+
     private void rotate(int degrees) { //rotates the bot. This works based off of
         double time = 0.01 * abs(degrees), speed = 0.6; //SPEED MUST BE KEPT AT 0.6 FOR THIS FUNCTION TO WORK!!!!
         //0.01 is a ratio which is defined by how the bot turns 180 degrees for each 1.8 seconds while motor speeds are 0.6 (plus or minus)
