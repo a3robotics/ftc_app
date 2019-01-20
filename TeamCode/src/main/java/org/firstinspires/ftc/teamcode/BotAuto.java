@@ -45,13 +45,108 @@ public class BotAuto extends LinearOpMode {
         waitForStart();
 
         // Actually do stuff
-        while(opModeIsActive()) {
-            telemetry.addData("Gyro Z Value", imu.getAngularOrientation().thirdAngle);
-        }
+        rotateGyro(90);
+        sleep(2000);
+        rotateGyro(90);
+        rotateGyro(90);
+        sleep(2000);
+        rotateGyro(-90);
+        rotateGyro(-180);
+
 
         robot.kill();
     }
 
+    private void rotateGyro(float degrees) {
+        float currentHeading; //CW -> negative, CCW -> positive
+        String dir = null;
+        float degreesLoop = imu.getAngularOrientation().firstAngle + degrees;
+        if(degreesLoop > 180)  degreesLoop = degreesLoop - 360;
+        if(degreesLoop < -180) degreesLoop = degreesLoop + 360;
+
+        if(degreesLoop > 0) degreesLoop -= 5;
+        if(degreesLoop < 0) degreesLoop += 5;
+
+
+        while(opModeIsActive()) {
+            currentHeading = imu.getAngularOrientation().firstAngle;
+            telemetry.addData("Var Heading", currentHeading);
+            telemetry.addData("Gyro Heading", imu.getAngularOrientation().firstAngle);
+            telemetry.addData("degrees", degrees);
+            telemetry.addData("degreesLoop", degreesLoop);
+            telemetry.addData("direction", dir);
+            telemetry.update();
+
+            if(degreesLoop < 0 && degrees > 0) { //CCW Special Case
+                dir = "CCW Special";
+                robot.motorL.setPower(-.5);
+                robot.motorR.setPower(.5);
+                if(currentHeading < 0 && currentHeading > degreesLoop) break;
+            }
+            else if(degreesLoop < 0 && degrees < 0) { //CW
+                dir = "CW";
+                robot.motorL.setPower(.5);
+                robot.motorR.setPower(-.5);
+                if(currentHeading < degreesLoop) break;
+            }
+            else if(degreesLoop > 0 && degrees < 0) { //CW Special Case
+                dir = "CW Special";
+                robot.motorL.setPower(.5);
+                robot.motorR.setPower(-.5);
+                if(currentHeading > 0 && currentHeading < degreesLoop) break;
+            }
+
+            else if(degreesLoop > 0 && degrees > 0) { //CCW
+                dir = "CCW";
+                robot.motorL.setPower(-.5);
+                robot.motorR.setPower(.5);
+                if(currentHeading > degreesLoop) break;
+            }
+            else break;
+        }
+        robot.motorL.setPower(0);
+        robot.motorR.setPower(0);
+    }
+
+    private void rotateGyroV2(float degrees) {
+        float currentHeading; //CW -> negative, CCW -> positive
+        float degreesLoop = imu.getAngularOrientation().firstAngle + degrees;
+
+        while(opModeIsActive()) {
+            currentHeading = imu.getAngularOrientation().firstAngle;
+            telemetry.addData("Var Heading", currentHeading);
+            telemetry.addData("Actual Heading", imu.getAngularOrientation().firstAngle);
+            telemetry.addData("degreesLoop", degreesLoop);
+            telemetry.update();
+
+            if(degrees > 0) {
+                if(degreesLoop > 0) { //CCW
+                    robot.motorL.setPower(-.5);
+                    robot.motorR.setPower(.5);
+                    if(currentHeading > degreesLoop) break;
+                }
+                else if(degreesLoop < 0) { //CCW Special Case
+                    robot.motorL.setPower(-.5);
+                    robot.motorR.setPower(.5);
+                    if(currentHeading < 0 && currentHeading > degreesLoop) break;
+                }
+            }
+            else if(degrees < 0) {
+                if(degreesLoop < 0) { //CW
+                    robot.motorL.setPower(.5);
+                    robot.motorR.setPower(-.5);
+                    if(currentHeading < degreesLoop) break;
+                }
+                else if(degreesLoop > 0) { //CW Special Case
+                    robot.motorL.setPower(.5);
+                    robot.motorR.setPower(-.5);
+                    if(currentHeading > 0 && currentHeading < degreesLoop) break;
+                }
+            }
+        }
+        robot.motorL.setPower(0);
+        robot.motorR.setPower(0);
+    }
     // Functions for autonomous
     private void lowerFromLift() {
         // extend lift
