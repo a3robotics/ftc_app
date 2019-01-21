@@ -80,7 +80,7 @@ public class HardwareLiftBot {
         motorLift.setPower(0); // stop lift motor
     }
 
-    private void driveByTime(double inches, double speed) {
+    public void driveByTime(double inches, double speed) {
         if(abs(speed)!=speed) {
             speed = abs(speed);
             inches *= -1;
@@ -97,7 +97,7 @@ public class HardwareLiftBot {
         kill();
     }
 
-    private void rotateGyro(float degrees) {
+    public void rotateGyro(float degrees) {
         float currentHeading; //CW -> negative, CCW -> positive
         String dir = null;
         float degreesLoop = imu.getAngularOrientation().firstAngle + degrees;
