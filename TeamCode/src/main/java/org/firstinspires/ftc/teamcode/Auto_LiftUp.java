@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.HardwareLiftBot;
 @Autonomous(name="Auto_LiftUp", group="Auto_LiftUp")
 // @Disabled
 public class Auto_LiftUp extends LinearOpMode {
-    private HardwareLiftBot robot = new HardwareLiftBot();
+    private HardwareLiftBot robot = new HardwareLiftBot(this);
     private ElapsedTime runtime = new ElapsedTime();
     public void runOpMode() {
         robot.init(hardwareMap);

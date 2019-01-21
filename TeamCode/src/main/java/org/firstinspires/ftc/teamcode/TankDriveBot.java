@@ -8,11 +8,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name="TankDriveBot",group="TankDriveBot")
 public class TankDriveBot extends OpMode {
 
-    private HardwareLiftBot robot = new HardwareLiftBot();
+    private HardwareLiftBot robot = new HardwareLiftBot(this);
     private int liftUpperLimit = 16000;
     private int liftLowerLimit = 0;
-
-
 
     public void init() {robot.init(hardwareMap);}
     public void start() {}

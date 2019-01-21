@@ -41,7 +41,7 @@ public class BotAutoTENSOR extends LinearOpMode {
     private TFObjectDetector tfod;
 
 
-    private HardwareLiftBot robot = new HardwareLiftBot();
+    private HardwareLiftBot robot = new HardwareLiftBot(this);
     ModernRoboticsI2cGyro gyro    = null;                    // Additional Gyro device
     // The IMU sensor object
     BNO055IMU imu;
