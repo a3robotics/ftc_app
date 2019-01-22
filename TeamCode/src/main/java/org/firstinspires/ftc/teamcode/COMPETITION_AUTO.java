@@ -38,7 +38,7 @@ public class COMPETITION_AUTO extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        /** Basic strategy:
+        /* Basic strategy:
          *
          *  1) Lower from lift (30 pts)
          *  2) Drive to depot (1/3 chance of 25 pts if gold marker is in the middle)
@@ -52,7 +52,7 @@ public class COMPETITION_AUTO extends LinearOpMode {
         robot.rotateGyro(90);
 
         // Drive to depot
-        robot.driveByTime(60,1);
+        robot.driveByTime(-60,1); // -60 because it's going backwards
         // NOTE: Eventual marker depositing mechanism is on the side not pointing to the depot
         // When that code is production ready, make sure to rotate the robot 180 degrees here
 
