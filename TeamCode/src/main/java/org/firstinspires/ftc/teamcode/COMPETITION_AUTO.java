@@ -52,15 +52,13 @@ public class COMPETITION_AUTO extends LinearOpMode {
         robot.rotateGyro(90);
 
         // Drive to depot
-        robot.driveByTime(-60,1); // -60 because it's going backwards
-        // NOTE: Eventual marker depositing mechanism is on the side not pointing to the depot
-        // When that code is production ready, make sure to rotate the robot 180 degrees here
+        robot.driveByTime(-72,1);
 
         // Turn towards crater
         robot.rotateGyro(45);
 
         // Drive to crater
-        robot.driveByTime(96,1);
+        robot.driveByTime(120,1);
 
     }
 }
