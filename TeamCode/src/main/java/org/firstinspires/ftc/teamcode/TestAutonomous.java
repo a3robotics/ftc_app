@@ -6,10 +6,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous(name="TestAutonomous", group="Test")
 public class TestAutonomous extends LinearOpMode {
 
-    private HardwareLiftBot robot;
+    private HardwareLiftBot robot = new HardwareLiftBot(this);
 
     @Override
     public void runOpMode() {
+        robot.init(hardwareMap);
+        waitForStart();
+
         // Autonomous functions:
 
         // Test lift lowering
@@ -40,6 +43,7 @@ public class TestAutonomous extends LinearOpMode {
 
         // Test run intake backwards
 
-
+        // Kill all motors
+        robot.kill();
     }
 }

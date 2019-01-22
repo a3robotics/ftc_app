@@ -22,17 +22,17 @@ public class HardwareLiftBot {
     public CRServo intake = null;
     private BNO055IMU imu;
     private HardwareMap hwMap =  null;
-    private ElapsedTime period = new ElapsedTime();
     private ElapsedTime runtime;
     private LinearOpMode parent;
 
     public HardwareLiftBot(LinearOpMode _parent){
         parent = _parent;
+        runtime = new ElapsedTime();
 
     }
     public HardwareLiftBot(OpMode _parent){
         parent = null;
-
+        runtime = new ElapsedTime();
     }
 
     public void init (HardwareMap ahwMap) {
@@ -70,14 +70,12 @@ public class HardwareLiftBot {
     }
 
     public void lowerLift() {
-        // For the first 14 seconds lower lift
         runtime.reset();
-        while (runtime.time() < 14 && parent.opModeIsActive()) {
-            // 15 seconds
-            motorLift.setPower(0.25);
+        while (runtime.time() < 10 && parent.opModeIsActive()) {
+            motorLift.setPower(0.5);
             parent.telemetry.addData("Lift Encoder:", motorLift.getCurrentPosition());
         }
-        motorLift.setPower(0); // stop lift motor
+        motorLift.setPower(0);
     }
 
     public void driveByTime(double inches, double speed) {

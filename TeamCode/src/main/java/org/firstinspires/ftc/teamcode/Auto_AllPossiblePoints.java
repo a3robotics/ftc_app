@@ -2,11 +2,13 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import static java.lang.Math.abs;
 
 @Autonomous(name="Auto_AllPossiblePoints", group="Auto_AllPossiblePoints")
+@Disabled
 public class Auto_AllPossiblePoints extends LinearOpMode {
 
     private HardwareLiftBot robot;
