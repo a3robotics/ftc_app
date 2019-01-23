@@ -22,6 +22,7 @@ public class Auto_Crater extends LinearOpMode {
         // Drive to crater
         robot.driveByTime(72,1);
 
+        // kill
         robot.kill();
     }
 }
