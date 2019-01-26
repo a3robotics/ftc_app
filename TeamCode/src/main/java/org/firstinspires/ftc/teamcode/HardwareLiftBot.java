@@ -24,6 +24,7 @@ public class HardwareLiftBot {
     private HardwareMap hwMap =  null;
     private ElapsedTime runtime;
     private LinearOpMode parent;
+    public CRServo marker = null;
 
     public HardwareLiftBot(LinearOpMode _parent){
         parent = _parent;
@@ -52,6 +53,7 @@ public class HardwareLiftBot {
         motorR = hwMap.dcMotor.get("motorRight");
         motorLift = hwMap.dcMotor.get("motorLift");
         intake = hwMap.crservo.get("intake");
+        marker = hwMap.crservo.get("marker");
         // left motor is backwards
         motorR.setDirection(DcMotor.Direction.REVERSE);
         motorLift.setDirection(DcMotor.Direction.REVERSE);
@@ -144,5 +146,11 @@ public class HardwareLiftBot {
         }
         motorL.setPower(0);
         motorR.setPower(0);
+    }
+    public void dispenseMarker() {
+        runtime.reset();
+        while(parent.opModeIsActive() && runtime.time() < 2) {
+            marker.setPower(1);
+        }
     }
 }
