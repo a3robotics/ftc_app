@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="_COMPETITION AUTO", group="_COMPETITION AUTO")
+@Autonomous(name="COMPETITION Depot side", group="COMPETITION AUTO")
 public class COMPETITION_AUTO extends LinearOpMode {
 
     /** COMPETITION AUTO
