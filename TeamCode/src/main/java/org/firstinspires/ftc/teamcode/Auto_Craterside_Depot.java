@@ -12,17 +12,16 @@ public class Auto_Craterside_Depot extends LinearOpMode {
     public void runOpMode() {
         robot.init(hardwareMap);
         waitForStart();
-
+        //in robot.rotate(degrees), CW -> negative, CCW -> positive
         robot.lowerLift();
-        robot.rotateGyro(-90);
-        robot.driveByTime(-34,1);
         robot.rotateGyro(90);
-        robot.driveByTime(34,1);
-        robot.rotateGyro(-45);
-        robot.driveByTime(72,1);
+        robot.driveByTime(-34,1);//hit center mineral
+        robot.rotateGyro(90);
+        robot.driveByTime(-34,1);//free of crater
+        robot.rotateGyro(45);
+        robot.driveByTime(-72,1);//in depot
         robot.dispenseMarker();
-        robot.rotateGyro(-90);
-        robot.driveByTime(78,1);
+        robot.driveByTime(84,1);//drive back to friendly team's craterside
         robot.kill();
     }
 }

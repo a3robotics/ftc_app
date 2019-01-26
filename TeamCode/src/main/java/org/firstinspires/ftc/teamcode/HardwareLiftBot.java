@@ -104,10 +104,6 @@ public class HardwareLiftBot {
         if(degreesLoop > 180)  degreesLoop = degreesLoop - 360;
         if(degreesLoop < -180) degreesLoop = degreesLoop + 360;
 
-        if(degreesLoop > 0) degreesLoop -= 5;
-        if(degreesLoop < 0) degreesLoop += 5;
-
-
         while(parent.opModeIsActive()) {
             currentHeading = imu.getAngularOrientation().firstAngle;
             parent.telemetry.addData("Var Heading", currentHeading);
