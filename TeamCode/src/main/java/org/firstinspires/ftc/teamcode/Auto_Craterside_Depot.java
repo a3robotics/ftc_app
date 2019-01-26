@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="Craterside Depot auto", group="Craterside Depot auto")
+@Autonomous(name="Auto Craterside->Depot", group="Auto Craterside->Depot")
 public class Auto_Craterside_Depot extends LinearOpMode {
 
     private HardwareLiftBot robot = new HardwareLiftBot(this);
