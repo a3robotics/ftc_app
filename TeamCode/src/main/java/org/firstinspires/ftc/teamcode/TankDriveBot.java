@@ -25,7 +25,7 @@ public class TankDriveBot extends OpMode {
         double driveSpeedFactor = 0.75;
         // Set motor power to joystick Y value
         robot.motorL.setPower(leftY * -driveSpeedFactor);
-        robot. motorR.setPower(rightY * -driveSpeedFactor);
+        robot.motorR.setPower(rightY * -driveSpeedFactor);
 
         // Use right trigger and bumper to lift and lower lift
         if (gamepad1.right_bumper) {
