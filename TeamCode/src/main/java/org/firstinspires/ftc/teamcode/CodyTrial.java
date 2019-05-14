@@ -8,4 +8,8 @@ public class CodyTrial extends OpMode {
 
 
     }
+
+    public void loop() {
+
+    }
 }
